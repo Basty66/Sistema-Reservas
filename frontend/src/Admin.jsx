@@ -33,7 +33,7 @@ function Admin() {
     // =============================================
     const verificarAcceso = (e) => {
         e.preventDefault()
-        if (password === 'MiClaveSegura2026') {
+        if (password === 'admin') {
             setAutorizado(true)
         } else {
             alert('Clave incorrecta ❌')
@@ -257,9 +257,9 @@ function Admin() {
         return (
             <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <img 
-                        src="/hero_oasis_1777577991129.png" 
-                        alt="Oasis Background" 
+                    <img
+                        src="/hero_oasis_1777577991129.png"
+                        alt="Oasis Background"
                         className="w-full h-full object-cover object-center filter blur-[6px] scale-105"
                         onError={(e) => e.target.src = "https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"}
                     />
@@ -270,7 +270,7 @@ function Admin() {
                     <div className="mb-6 text-6xl drop-shadow-md">🌴</div>
                     <h2 className="text-3xl font-serif font-black mb-2 text-brand-dark tracking-tight">Piscina Oasis</h2>
                     <p className="text-xs font-bold text-brand-muted uppercase tracking-widest mb-10">Portal Administrativo</p>
-                    
+
                     <div className="relative mb-8">
                         <input
                             type="password"
@@ -281,11 +281,11 @@ function Admin() {
                             autoFocus
                         />
                     </div>
-                    
+
                     <button className="w-full bg-brand-dark text-white py-4 rounded-2xl font-bold text-lg hover:bg-brand-primary transition-all duration-300 shadow-xl hover:shadow-cyan-500/30 flex justify-center items-center gap-3 group">
                         Ingresar al Panel <span className="group-hover:translate-x-1 transition-transform text-xl">→</span>
                     </button>
-                    
+
                     <p className="text-xs font-medium text-brand-muted mt-8">
                         Acceso restringido a personal autorizado.
                     </p>
@@ -338,11 +338,10 @@ function Admin() {
                         <button
                             key={tab.id}
                             onClick={() => setVistaActiva(tab.id)}
-                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                                vistaActiva === tab.id
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${vistaActiva === tab.id
                                     ? 'bg-brand-primary/10 text-brand-primary'
                                     : 'text-brand-muted hover:bg-white hover:text-brand-dark'
-                            }`}
+                                }`}
                         >
                             <span>{tab.icon}</span> {tab.label}
                         </button>
@@ -352,7 +351,7 @@ function Admin() {
 
             {/* MAIN CONTENT */}
             <main className="flex-1 p-8 md:p-12 h-screen overflow-y-auto">
-                
+
                 {/* HEADER */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
                     <div>
@@ -367,7 +366,7 @@ function Admin() {
                             {vistaActiva === 'calendario' && "Gestiona fechas libres y bloquea días por mantención."}
                         </p>
                     </div>
-                    
+
                     {vistaActiva === 'finanzas' && (
                         <button onClick={exportarCSV} className="bg-white border border-brand-primary/20 text-brand-primary px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-primary/5 transition shadow-sm flex items-center gap-2">
                             <span>📥</span> Exportar Reporte
@@ -498,9 +497,8 @@ function Admin() {
                                                         ${reserva.total_cotizado?.toLocaleString('es-CL')}
                                                     </td>
                                                     <td className="py-4">
-                                                        <span className={`px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5 ${
-                                                            reserva.estado === 'Confirmado' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'
-                                                        }`}>
+                                                        <span className={`px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5 ${reserva.estado === 'Confirmado' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'
+                                                            }`}>
                                                             <span className={`w-1.5 h-1.5 rounded-full ${reserva.estado === 'Confirmado' ? 'bg-emerald-500' : 'bg-orange-500'}`}></span>
                                                             {reserva.estado}
                                                         </span>
@@ -511,9 +509,8 @@ function Admin() {
                                                                 <button
                                                                     onClick={() => confirmarReserva(reserva.id)}
                                                                     disabled={procesandoId === reserva.id}
-                                                                    className={`text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                                                                        procesandoId === reserva.id ? 'bg-emerald-300' : 'bg-brand-primary hover:bg-brand-dark'
-                                                                    }`}
+                                                                    className={`text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${procesandoId === reserva.id ? 'bg-emerald-300' : 'bg-brand-primary hover:bg-brand-dark'
+                                                                        }`}
                                                                 >
                                                                     Confirmar
                                                                 </button>
@@ -542,10 +539,10 @@ function Admin() {
                 {/* ============================== */}
                 {vistaActiva === 'calendario' && (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl">
-                        
+
                         <div className="glass-card rounded-3xl p-8">
                             <h3 className="text-lg font-serif font-bold text-brand-dark mb-6">Vista del Calendario</h3>
-                            
+
                             <div className="flex flex-wrap gap-4 mb-6">
                                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-emerald-500"></span><span className="text-xs font-semibold text-brand-muted">Confirmada</span></div>
                                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-orange-500"></span><span className="text-xs font-semibold text-brand-muted">Pendiente</span></div>
@@ -573,7 +570,7 @@ function Admin() {
                             <div className="glass-card rounded-3xl p-8">
                                 <h3 className="text-lg font-serif font-bold text-brand-dark mb-4">Bloquear Fechas</h3>
                                 <p className="text-xs text-brand-muted mb-6 line-clamp-2">Evita reservas en días específicos por uso privado o mantención.</p>
-                                
+
                                 <form onSubmit={bloquearFecha} className="flex flex-col gap-4">
                                     <DatePicker
                                         selected={fechaBloquear}
