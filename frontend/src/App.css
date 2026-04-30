@@ -1,0 +1,40 @@
+/* Estilos para agrandar el DatePicker y que se vea moderno */
+.calendario-pro-container .react-datepicker {
+  width: 100% !important;
+  border: none !important;
+  font-family: inherit !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.calendario-pro-container .react-datepicker__month-container {
+  width: 100% !important;
+}
+
+.calendario-pro-container .react-datepicker__day-name,
+.calendario-pro-container .react-datepicker__day {
+  width: 3rem !important;
+  /* Días más grandes */
+  line-height: 3rem !important;
+  margin: 0.2rem !important;
+  border-radius: 50% !important;
+  /* Días circulares */
+}
+
+.calendario-pro-container .react-datepicker__day--selected {
+  background-color: #0f172a !important;
+  /* Color slate-900 */
+  color: white !important;
+}
+
+.calendario-pro-container .react-datepicker__day--disabled {
+  color: #cbd5e1 !important;
+  text-decoration: line-through !important;
+  background-color: #f8fafc !important;
+}
+
+.calendario-pro-container .react-datepicker__header {
+  background-color: white !important;
+  border-bottom: none !important;
+  padding-top: 0 !important;
+}
