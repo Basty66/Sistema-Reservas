@@ -1,1 +1,170 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  --color-brand-night: #0c1222;
+  --color-brand-void: #111827;
+  --color-brand-dark: #1e293b;
+  --color-brand-slate: #334155;
+  --color-brand-muted: #64748b;
+  --color-brand-light: #f1f5f9;
+  --color-brand-gold: #d4a853;
+  --color-brand-gold-light: #f0d78c;
+  --color-brand-gold-dark: #b8892f;
+  --color-brand-teal: #14b8a6;
+  --color-brand-teal-dark: #0d9488;
+  --color-brand-cream: #faf8f5;
+  --color-brand-rose: #e11d48;
+  --color-brand-rose-dark: #be123c;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 1; transform: translateX(100px); }
+}
+
+.animate-fadeIn { animation: fadeIn 0.5s ease-out; }
+.animate-slideUp { animation: slideUp 0.6s ease-out; }
+.animate-slideDown { animation: slideDown 0.4s ease-out; }
+.animate-scaleIn { animation: scaleIn 0.3s ease-out; }
+.animate-toastIn { animation: toastIn 0.4s ease-out; }
+.animate-toastOut { animation: toastOut 0.3s ease-in forwards; }
+
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.glass-light {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.glass-dark {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-gold {
+  background: linear-gradient(135deg, rgba(212, 168, 83, 0.12), rgba(240, 215, 140, 0.06));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 168, 83, 0.2);
+}
+
+.react-datepicker {
+  font-family: 'Inter', sans-serif !important;
+  border: none !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  border-radius: 1rem !important;
+  overflow: hidden;
+}
+.react-datepicker__header {
+  background-color: #faf8f5 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding-top: 12px !important;
+}
+.react-datepicker__current-month {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  font-size: 0.95rem !important;
+}
+.react-datepicker__day-name {
+  color: #64748b !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  width: 2.2rem !important;
+  line-height: 2.2rem !important;
+}
+.react-datepicker__day {
+  width: 2.2rem !important;
+  line-height: 2.2rem !important;
+  border-radius: 8px !important;
+  margin: 2px !important;
+  font-size: 0.85rem !important;
+  transition: all 0.15s ease !important;
+}
+.react-datepicker__day--selected {
+  background-color: #14b8a6 !important;
+  color: white !important;
+  font-weight: 700 !important;
+}
+.react-datepicker__day--keyboard-selected {
+  background-color: #14b8a6 !important;
+  color: white !important;
+}
+.react-datepicker__day:hover {
+  background-color: #d4a853 !important;
+  color: white !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.cal-confirmada { background-color: #10b981 !important; color: white !important; }
+.cal-pendiente { background-color: #f59e0b !important; color: white !important; }
+.cal-libre { background-color: #fdfbf7 !important; color: #64748b !important; }
+.cal-bloqueada { background-color: #0c1222 !important; color: white !important; text-decoration: line-through !important; }
+.reserva-confirmada { background: #ef4444 !important; color: white !important; }
+.reserva-pendiente { background: #f59e0b !important; color: white !important; }
+.fecha-bloqueada { background: #0c1222 !important; color: #94a3b8 !important; text-decoration: line-through !important; cursor: not-allowed !important; }
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 480px) {
+  .xs\:hidden { display: none !important; }
+  .xs\:inline { display: inline !important; }
+}
+@media (min-width: 481px) {
+  .xs\:hidden { display: inline !important; }
+  .xs\:inline { display: none !important; }
+}
