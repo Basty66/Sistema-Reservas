@@ -1,12 +1,20 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { GALLERY_IMAGES } from '../config'
 
 export default function Gallery() {
-  const [lightbox, setLightbox] = useState(null)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
   const handleError = (e) => {
     e.target.src = "https://images.unsplash.com/photo-1576013551627-11971f36e414?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
   }
+
+  const prev = useCallback(() => {
+    setLightboxIndex(prev => (prev === 0 ? GALLERY_IMAGES.length - 1 : prev - 1))
+  }, [])
+
+  const next = useCallback(() => {
+    setLightboxIndex(prev => (prev === GALLERY_IMAGES.length - 1 ? 0 : prev + 1))
+  }, [])
 
   return (
     <section id="galeria" className="py-28 px-8 max-w-7xl mx-auto">
@@ -25,7 +33,7 @@ export default function Gallery() {
           <div
             key={i}
             className={`group relative rounded-[2rem] overflow-hidden shadow-xl cursor-pointer hover-lift card-shine ${img.span}`}
-            onClick={() => setLightbox(img.src)}
+            onClick={() => setLightboxIndex(i)}
           >
             <img
               src={img.src}
@@ -52,25 +60,55 @@ export default function Gallery() {
         ))}
       </div>
 
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-[999] bg-brand-night/95 backdrop-blur-2xl flex items-center justify-center p-4 animate-fadeIn"
-          onClick={() => setLightbox(null)}
-        >
-          <button
-            onClick={() => setLightbox(null)}
-            className="absolute top-6 right-6 w-14 h-14 glass-dark text-white rounded-full flex items-center justify-center hover:bg-white/20 transition cursor-pointer text-xl shadow-2xl z-10"
+      {lightboxIndex !== null && (() => {
+        const img = GALLERY_IMAGES[lightboxIndex]
+        return (
+          <div
+            className="fixed inset-0 z-[999] bg-brand-night/95 backdrop-blur-2xl flex items-center justify-center p-4 animate-fadeIn"
+            onClick={() => setLightboxIndex(null)}
           >
-            ✕
-          </button>
-          <img
-            src={lightbox}
-            alt="Galería"
-            className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain animate-scaleIn"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
+            <button
+              onClick={() => setLightboxIndex(null)}
+              className="absolute top-4 sm:top-6 right-4 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 glass-dark text-white rounded-full flex items-center justify-center hover:bg-white/20 transition cursor-pointer text-xl shadow-2xl z-10"
+            >
+              ✕
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); prev() }}
+              className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 glass-dark text-white/70 rounded-full flex items-center justify-center hover:bg-white/20 hover:text-white transition cursor-pointer text-lg shadow-2xl z-10"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); next() }}
+              className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 glass-dark text-white/70 rounded-full flex items-center justify-center hover:bg-white/20 hover:text-white transition cursor-pointer text-lg shadow-2xl z-10"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <div className="flex flex-col items-center gap-4 max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+              <img
+                src={img.src}
+                alt={img.label}
+                className="max-w-full max-h-[60vh] rounded-2xl sm:rounded-3xl shadow-2xl object-contain animate-scaleIn"
+              />
+              <div className="w-full max-w-lg text-center animate-slideUp">
+                <p className="text-brand-gold text-xs font-bold uppercase tracking-[0.15em] mb-1">
+                  {lightboxIndex + 1} / {GALLERY_IMAGES.length}
+                </p>
+                <h3 className="text-white text-xl sm:text-2xl font-serif font-bold mb-2">{img.label}</h3>
+                <p className="text-white/50 text-sm sm:text-base font-light leading-relaxed">{img.desc}</p>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
     </section>
   )
 }
