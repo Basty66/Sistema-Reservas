@@ -20,41 +20,72 @@
   --color-brand-rose-dark: #be123c;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(100px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes toastOut {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 1; transform: translateX(100px); }
-}
+html { scroll-behavior: smooth; }
+::selection { background: #d4a853; color: #0c1222; }
+::-moz-selection { background: #d4a853; color: #0c1222; }
 
-.animate-fadeIn { animation: fadeIn 0.5s ease-out; }
-.animate-slideUp { animation: slideUp 0.6s ease-out; }
-.animate-slideDown { animation: slideDown 0.4s ease-out; }
-.animate-scaleIn { animation: scaleIn 0.3s ease-out; }
-.animate-toastIn { animation: toastIn 0.4s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes toastIn { from { opacity: 0; transform: translateX(100px) scale(0.9); } to { opacity: 1; transform: translateX(0) scale(1); } }
+@keyframes toastOut { from { opacity: 1; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(100px) scale(0.9); } }
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(5px) rotate(-1deg); }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 83, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(212, 168, 83, 0.4); }
+}
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(212, 168, 83, 0.2); }
+  50% { border-color: rgba(212, 168, 83, 0.5); }
+}
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(20px); clip-path: inset(0 0 100% 0); }
+  to { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+}
+@keyframes orb-move {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.1); }
+  50% { transform: translate(-20px, 10px) scale(0.9); }
+  75% { transform: translate(10px, -30px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes count-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-fadeIn { animation: fadeIn 0.5s ease-out both; }
+.animate-slideUp { animation: slideUp 0.6s ease-out both; }
+.animate-slideDown { animation: slideDown 0.4s ease-out both; }
+.animate-scaleIn { animation: scaleIn 0.3s ease-out both; }
+.animate-toastIn { animation: toastIn 0.4s ease-out both; }
 .animate-toastOut { animation: toastOut 0.3s ease-in forwards; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+.animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-gradient { background-size: 200% 200%; animation: gradient-shift 6s ease infinite; }
+.animate-border-glow { animation: border-glow 2s ease-in-out infinite; }
+.animate-orb { animation: orb-move 12s ease-in-out infinite; }
+.animate-orb-delayed { animation: orb-move 15s ease-in-out infinite 2s; }
+.animate-reveal { animation: reveal 0.8s ease-out both; }
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
 
 .skeleton {
   background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
@@ -64,101 +95,149 @@
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.glass-light {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-.glass-dark {
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.glass-gold {
-  background: linear-gradient(135deg, rgba(212, 168, 83, 0.12), rgba(240, 215, 140, 0.06));
+.glass-light {
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(212, 168, 83, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.glass-dark {
+  background: rgba(12, 18, 34, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.glass-gold {
+  background: linear-gradient(135deg, rgba(212, 168, 83, 0.12), rgba(240, 215, 140, 0.04));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 168, 83, 0.15);
+}
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #d4a853, #b8892f);
+  color: #0c1222;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #f0d78c, #d4a853);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(212, 168, 83, 0.3);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.input-premium {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+.input-premium:focus {
+  border-color: #d4a853;
+  box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+}
+.input-premium::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+.input-white {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: #1e293b;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-weight: 500;
+}
+.input-white:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15);
+}
+
+.label-premium {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
 }
 
 .react-datepicker {
   font-family: 'Inter', sans-serif !important;
   border: none !important;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
   border-radius: 1rem !important;
   overflow: hidden;
 }
 .react-datepicker__header {
-  background-color: #faf8f5 !important;
+  background: linear-gradient(135deg, #faf8f5, #f1f0ec) !important;
   border-bottom: 1px solid #e2e8f0 !important;
-  padding-top: 12px !important;
+  padding: 14px 10px 10px !important;
 }
-.react-datepicker__current-month {
-  font-weight: 700 !important;
-  color: #1e293b !important;
-  font-size: 0.95rem !important;
-}
-.react-datepicker__day-name {
-  color: #64748b !important;
-  font-weight: 600 !important;
-  font-size: 0.75rem !important;
-  width: 2.2rem !important;
-  line-height: 2.2rem !important;
-}
-.react-datepicker__day {
-  width: 2.2rem !important;
-  line-height: 2.2rem !important;
-  border-radius: 8px !important;
-  margin: 2px !important;
-  font-size: 0.85rem !important;
-  transition: all 0.15s ease !important;
-}
-.react-datepicker__day--selected {
-  background-color: #14b8a6 !important;
-  color: white !important;
-  font-weight: 700 !important;
-}
-.react-datepicker__day--keyboard-selected {
-  background-color: #14b8a6 !important;
-  color: white !important;
-}
-.react-datepicker__day:hover {
-  background-color: #d4a853 !important;
-  color: white !important;
-}
+.react-datepicker__current-month { font-weight: 800 !important; color: #0c1222 !important; font-size: 0.95rem !important; }
+.react-datepicker__day-name { color: #64748b !important; font-weight: 600 !important; font-size: 0.7rem !important; width: 2.2rem !important; line-height: 2.2rem !important; }
+.react-datepicker__day { width: 2.2rem !important; line-height: 2.2rem !important; border-radius: 10px !important; margin: 2px !important; font-size: 0.85rem !important; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important; font-weight: 500 !important; }
+.react-datepicker__day--selected { background: linear-gradient(135deg, #14b8a6, #0d9488) !important; color: white !important; font-weight: 700 !important; box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3) !important; }
+.react-datepicker__day--keyboard-selected { background: linear-gradient(135deg, #14b8a6, #0d9488) !important; color: white !important; }
+.react-datepicker__day:hover { background: linear-gradient(135deg, #d4a853, #b8892f) !important; color: white !important; transform: scale(1.05); }
+.react-datepicker__day--disabled { opacity: 0.4 !important; }
+.react-datepicker__navigation { top: 14px !important; }
+.react-datepicker__navigation-icon::before { border-color: #334155 !important; }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
+.custom-scrollbar::-webkit-scrollbar { width: 5px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-.cal-confirmada { background-color: #10b981 !important; color: white !important; }
-.cal-pendiente { background-color: #f59e0b !important; color: white !important; }
-.cal-libre { background-color: #fdfbf7 !important; color: #64748b !important; }
-.cal-bloqueada { background-color: #0c1222 !important; color: white !important; text-decoration: line-through !important; }
-.reserva-confirmada { background: #ef4444 !important; color: white !important; }
-.reserva-pendiente { background: #f59e0b !important; color: white !important; }
+.cal-confirmada { background: linear-gradient(135deg, #10b981, #059669) !important; color: white !important; }
+.cal-pendiente { background: linear-gradient(135deg, #f59e0b, #d97706) !important; color: white !important; }
+.cal-libre { background: #fdfbf7 !important; color: #64748b !important; }
+.cal-bloqueada { background: #0c1222 !important; color: white !important; text-decoration: line-through !important; }
+.reserva-confirmada { background: linear-gradient(135deg, #ef4444, #dc2626) !important; color: white !important; }
+.reserva-pendiente { background: linear-gradient(135deg, #f59e0b, #d97706) !important; color: white !important; }
 .fecha-bloqueada { background: #0c1222 !important; color: #94a3b8 !important; text-decoration: line-through !important; cursor: not-allowed !important; }
 
-.safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
+.safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
 
 @media (max-width: 480px) {
   .xs\:hidden { display: none !important; }
@@ -167,4 +246,37 @@
 @media (min-width: 481px) {
   .xs\:hidden { display: inline !important; }
   .xs\:inline { display: none !important; }
+}
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.card-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.1) 55%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.card-shine:hover::after {
+  opacity: 1;
+  animation: shimmer 0.8s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

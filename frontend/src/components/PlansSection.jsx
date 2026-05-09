@@ -1,60 +1,84 @@
 export default function PlansSection({ planes, onSelectPlan }) {
   if (!planes || planes.length === 0) {
     return (
-      <section id="planes" className="py-24 px-8 max-w-7xl mx-auto">
+      <section id="planes" className="py-28 px-8 max-w-7xl mx-auto">
         <div className="text-center">
           <span className="text-brand-gold uppercase tracking-[0.2em] text-sm font-bold mb-3 block">Reserva tu Día</span>
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-brand-dark mb-6">Planes de Arriendo</h2>
-          <div className="skeleton h-64 w-full max-w-lg mx-auto" />
+          <div className="skeleton h-72 w-full max-w-lg mx-auto rounded-[2rem]" />
         </div>
       </section>
     )
   }
 
   return (
-    <section id="planes" className="py-24 px-8 max-w-7xl mx-auto bg-white/50 rounded-[3rem] shadow-xl border border-white mb-24 backdrop-blur-sm">
+    <section id="planes" className="py-28 px-8 max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <span className="text-brand-gold uppercase tracking-[0.2em] text-sm font-bold mb-3 block">Reserva tu Día</span>
-        <h2 className="text-4xl md:text-5xl font-serif font-bold text-brand-dark mb-6">Planes de Arriendo</h2>
-        <p className="text-brand-muted max-w-2xl mx-auto text-lg font-light">
+        <span className="text-brand-gold uppercase tracking-[0.25em] text-sm font-black mb-4 block">Reserva tu Día</span>
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brand-dark mb-6 leading-tight">
+          Planes de <span className="text-brand-gold">Arriendo</span>
+        </h2>
+        <p className="text-brand-muted max-w-2xl mx-auto text-lg font-light leading-relaxed">
           Elige el plan que mejor se adapte a tu celebración y asegura tu fecha en el oasis.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 md:px-8">
-        {planes.map(p => (
-          <div
-            key={p.id}
-            className="group relative rounded-3xl overflow-hidden h-[480px] shadow-2xl cursor-pointer hover:-translate-y-2 transition-all duration-500"
-            onClick={() => onSelectPlan(p)}
-          >
-            <img
-              src="/gal_piscina_1777578003893.png"
-              alt={p.nombre}
-              onError={(e) => e.target.src = "https://images.unsplash.com/photo-1576013551627-11971f36e414?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"}
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-night/95 via-brand-night/40 to-transparent"></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 md:px-0">
+        {planes.map((p, i) => {
+          const isPopular = i === 1
+          return (
+            <div
+              key={p.id}
+              className="group relative rounded-[2rem] overflow-hidden shadow-2xl cursor-pointer hover:-translate-y-3 transition-all duration-700 card-shine"
+              onClick={() => onSelectPlan(p)}
+            >
+              {isPopular && (
+                <div className="absolute top-6 right-0 z-10">
+                  <div className="bg-gradient-to-r from-brand-gold to-brand-gold-dark text-brand-night text-xs font-black px-5 py-1.5 rounded-l-full shadow-lg animate-glow-pulse">
+                    POPULAR
+                  </div>
+                </div>
+              )}
 
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              <div className="glass-light p-6 rounded-2xl border-white/40">
-                <h3 className="text-2xl font-serif font-bold text-brand-dark mb-1">{p.nombre}</h3>
-                <p className="text-brand-teal font-black text-2xl mb-3">
-                  ${p.precio_base.toLocaleString('es-CL')}
-                </p>
-                <p className="text-sm text-brand-muted font-medium mb-4">
-                  {p.descripcion || 'Acceso completo a piscinas, quinchos y áreas verdes para disfrutar al máximo.'}
-                </p>
-                <button
-                  className="w-full bg-brand-night text-white font-bold py-3 rounded-xl group-hover:bg-brand-teal transition-colors cursor-pointer"
-                  onClick={(e) => { e.stopPropagation(); onSelectPlan(p) }}
-                >
-                  Cotizar Este Plan →
-                </button>
+              <img
+                src="/gal_piscina_1777578003893.png"
+                alt={p.nombre}
+                onError={(e) => e.target.src = "https://images.unsplash.com/photo-1576013551627-11971f36e414?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-night/95 via-brand-night/30 to-transparent" />
+
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <div className="glass-card p-6 md:p-7 rounded-2xl border border-white/30 backdrop-blur-xl">
+                  <h3 className="text-2xl font-serif font-bold text-brand-dark mb-1">{p.nombre}</h3>
+                  <div className="flex items-baseline gap-1 mb-4">
+                    <span className="text-3xl font-black text-brand-gold">${p.precio_base.toLocaleString('es-CL')}</span>
+                  </div>
+
+                  <div className="space-y-2.5 mb-6">
+                    {(p.items_incluidos || ['Piscina', 'Quincho', 'Áreas Verdes', 'Estacionamiento']).slice(0, 4).map((item, j) => (
+                      <div key={j} className="flex items-center gap-2.5">
+                        <div className="w-5 h-5 rounded-full bg-brand-gold/20 flex items-center justify-center shrink-0">
+                          <svg className="w-3 h-3 text-brand-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <span className="text-sm text-brand-muted font-medium">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    className="w-full bg-gradient-to-r from-brand-night to-brand-slate text-white font-bold py-3.5 rounded-xl group-hover:from-brand-teal group-hover:to-brand-teal-dark transition-all duration-500 shadow-lg cursor-pointer"
+                    onClick={(e) => { e.stopPropagation(); onSelectPlan(p) }}
+                  >
+                    Cotizar Este Plan →
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </section>
   )

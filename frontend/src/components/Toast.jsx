@@ -1,10 +1,7 @@
 import { useState, useEffect, createContext, useContext, useCallback } from 'react'
 
 const ToastContext = createContext(null)
-
-export function useToast() {
-  return useContext(ToastContext)
-}
+export function useToast() { return useContext(ToastContext) }
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([])
@@ -28,6 +25,14 @@ export function ToastProvider({ children }) {
     }
   }, [toasts, removeToast])
 
+  const icons = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' }
+  const styles = {
+    success: 'from-emerald-600 to-emerald-700',
+    error: 'from-brand-rose to-brand-rose-dark',
+    warning: 'from-brand-gold to-brand-gold-dark text-brand-night',
+    info: 'from-brand-slate to-brand-dark',
+  }
+
   return (
     <ToastContext.Provider value={addToast}>
       {children}
@@ -35,23 +40,15 @@ export function ToastProvider({ children }) {
         {toasts.map(t => (
           <div
             key={t.id}
-            className={`pointer-events-auto max-w-sm px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transition-all ${
+            className={`pointer-events-auto max-w-sm w-full px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 bg-gradient-to-r ${styles[t.type]} ${
               t.exiting ? 'animate-toastOut' : 'animate-toastIn'
-            } ${
-              t.type === 'success'
-                ? 'bg-brand-teal text-white'
-                : t.type === 'error'
-                ? 'bg-brand-rose text-white'
-                : t.type === 'warning'
-                ? 'bg-brand-gold text-brand-night'
-                : 'glass-dark text-white'
             }`}
           >
-            <span className="text-lg shrink-0">
-              {t.type === 'success' ? '✓' : t.type === 'error' ? '✕' : t.type === 'warning' ? '⚠' : 'ℹ'}
+            <span className="text-lg font-bold shrink-0 w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
+              {icons[t.type]}
             </span>
-            <p className="text-sm font-medium flex-1">{t.message}</p>
-            <button onClick={() => removeToast(t.id)} className="opacity-60 hover:opacity-100 text-sm font-bold">&times;</button>
+            <p className="text-sm font-medium flex-1 text-white">{t.message}</p>
+            <button onClick={() => removeToast(t.id)} className="opacity-50 hover:opacity-100 text-white text-lg leading-none cursor-pointer">&times;</button>
           </div>
         ))}
       </div>
