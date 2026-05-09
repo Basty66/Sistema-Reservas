@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0d78c"/>
+      <stop offset="50%" stop-color="#d4a853"/>
+      <stop offset="100%" stop-color="#b8892f"/>
+    </linearGradient>
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+  <!-- Palm tree icon -->
+  <g transform="translate(5, 5)">
+    <!-- Trunk -->
+    <path d="M18 45 C18 35, 16 25, 22 15" stroke="url(#goldGrad)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Leaves -->
+    <path d="M22 15 C30 10, 38 14, 42 10" stroke="url(#tealGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M22 15 C16 8, 10 12, 6 8" stroke="url(#tealGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M22 15 C26 6, 32 4, 34 2" stroke="url(#goldGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M22 15 C18 6, 12 4, 10 2" stroke="url(#goldGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M22 15 C24 20, 30 22, 28 26" stroke="url(#tealGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Water drops -->
+    <ellipse cx="30" cy="4" rx="1.5" ry="2.5" fill="#14b8a6" opacity="0.6"/>
+    <ellipse cx="14" cy="3" rx="1.5" ry="2.5" fill="#14b8a6" opacity="0.6"/>
+  </g>
+  <!-- Text -->
+  <text x="52" y="30" font-family="'Playfair Display', serif" font-size="18" font-weight="800" fill="#1e293b" letter-spacing="0.5">Piscina</text>
+  <text x="52" y="48" font-family="'Playfair Display', serif" font-size="18" font-weight="800" fill="url(#goldGrad)" letter-spacing="1.5">OASIS</text>
+  <!-- Decorative line -->
+  <line x1="52" y1="36" x2="130" y2="36" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.3"/>
+</svg>
