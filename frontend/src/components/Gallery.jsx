@@ -85,14 +85,14 @@ export default function Gallery() {
           </div>
         </Reveal>
 
-        <div ref={statsRef} className="flex flex-wrap justify-center gap-8 md:gap-16 py-6 mb-14 lg:mb-16 border-y border-white/5">
+        <div ref={statsRef} className="flex flex-wrap justify-center gap-8 md:gap-16 py-7 mb-16 border-t border-white/[0.04] border-b border-white/[0.04]">
           {STATS.map((s, i) => (
             <Reveal key={i} animation="fade-up" delay={i * 120}>
               <div className="text-center">
                 <p className="text-2xl md:text-3xl font-bold font-heading text-brand-gold tabular-nums">
                   <AnimatedCounter target={s.value} suffix={s.suffix} active={statsActive} />
                 </p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-white/25 font-semibold mt-1">{s.label}</p>
+                <p className="text-[9px] uppercase tracking-[0.25em] text-white/20 font-medium mt-1.5">{s.label}</p>
               </div>
             </Reveal>
           ))}
@@ -103,12 +103,12 @@ export default function Gallery() {
             const isHero = i === 0
             const isWide = i === 4
             const sp = isHero ? 'md:col-span-3' : isWide ? 'md:col-span-2' : ''
-            const h = isHero ? 'h-[340px] md:h-[480px] lg:h-[560px]' : 'h-[300px] md:h-[340px]'
+            const h = isHero ? 'h-[340px] md:h-[520px] lg:h-[600px]' : 'h-[300px] md:h-[340px]'
 
             return (
               <Reveal key={i} animation="fade-up" delay={i * 100} className={sp}>
                 <div
-                  className={`group relative overflow-hidden cursor-pointer rounded-2xl bg-brand-void shadow-lg hover:shadow-2xl transition-all duration-500 ${h}`}
+                  className={`group relative overflow-hidden cursor-pointer rounded-xl bg-brand-void shadow-lg hover:shadow-2xl transition-shadow duration-500 ${h}`}
                   onClick={() => setLightboxIndex(i)}
                 >
                   <img
@@ -116,22 +116,15 @@ export default function Gallery() {
                     alt={img.label}
                     loading="lazy"
                     onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1576013551627-11971f36e414?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}
-                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.04]"
+                    className="w-full h-full object-cover transition-all duration-[800ms] ease-out group-hover:scale-[1.03]"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-night/80 via-brand-night/5 via-50% to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-night/40 via-transparent to-transparent" />
 
-                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <div className="w-5 h-px bg-brand-gold/60" />
-                      <span className="text-[9px] uppercase tracking-[0.25em] text-brand-gold/80 font-bold">
-                        Espacio {String(i + 1).padStart(2, '0')}
-                      </span>
-                    </div>
-                    <h3 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold text-white drop-shadow-lg">{img.label}</h3>
-                    <div className="overflow-hidden max-h-0 group-hover:max-h-16 transition-all duration-[400ms] ease-out">
-                      <p className="text-white/50 text-sm font-light leading-relaxed mt-1.5 line-clamp-2">{img.desc}</p>
-                    </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <h3 className={`font-serif font-bold text-white drop-shadow-xl ${isHero ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl'}`}>
+                      {img.label}
+                    </h3>
                   </div>
                 </div>
               </Reveal>
@@ -143,45 +136,36 @@ export default function Gallery() {
       {lightboxIndex !== null && (() => {
         const img = GALLERY_IMAGES[lightboxIndex]
         return (
-          <div className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-lg select-none animate-[fadeIn_0.25s_ease-out_both]" onClick={() => setLightboxIndex(null)}>
-            <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-4 sm:p-6 bg-gradient-to-b from-black/60 to-transparent">
-              <div className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-gold" />
-                <span className="text-white/50 text-xs font-mono tracking-wider">
-                  {String(lightboxIndex + 1).padStart(2, '0')} / {String(GALLERY_IMAGES.length).padStart(2, '0')}
-                </span>
-              </div>
+          <div className="fixed inset-0 z-[999] bg-black select-none animate-[fadeIn_0.2s_ease-out_both]" onClick={() => setLightboxIndex(null)}>
+            <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-5 sm:p-7">
+              <span className="text-white/30 text-xs font-mono tracking-wider">
+                {String(lightboxIndex + 1).padStart(2, '0')} / {String(GALLERY_IMAGES.length).padStart(2, '0')}
+              </span>
               <button onClick={(e) => { e.stopPropagation(); setLightboxIndex(null) }}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 text-white/50 hover:text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm border border-white/5">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/12 text-white/50 hover:text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
 
             <div className="absolute inset-0 flex items-center justify-center">
               <button onClick={(e) => { e.stopPropagation(); navigate(-1) }}
-                className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/8 hover:bg-white/18 text-white/40 hover:text-white flex items-center justify-center transition-all backdrop-blur-md border border-white/8 cursor-pointer z-10">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M15 19l-7-7 7-7"/></svg>
+                className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-white/12 text-white/30 hover:text-white flex items-center justify-center transition-all backdrop-blur-sm cursor-pointer z-10">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M15 19l-7-7 7-7"/></svg>
               </button>
 
-              <div key={lightboxIndex} className="w-full h-full flex items-center justify-center p-4 sm:p-16" onClick={(e) => e.stopPropagation()}>
-                <img src={img.src} alt={img.label} className="max-w-full max-h-full w-auto h-auto object-contain drop-shadow-2xl animate-[lb-enter_0.3s_ease-out_both]" style={{ maxHeight: 'calc(100vh - 140px)' }} />
+              <div key={lightboxIndex} className="w-full h-full flex items-center justify-center p-6 sm:p-16" onClick={(e) => e.stopPropagation()}>
+                <img src={img.src} alt={img.label} className="max-w-full max-h-full w-auto h-auto object-contain drop-shadow-2xl animate-[lb-enter_0.3s_ease-out_both]" style={{ maxHeight: 'calc(100vh - 120px)' }} />
               </div>
 
               <button onClick={(e) => { e.stopPropagation(); navigate(1) }}
-                className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/8 hover:bg-white/18 text-white/40 hover:text-white flex items-center justify-center transition-all backdrop-blur-md border border-white/8 cursor-pointer z-10">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M9 5l7 7-7 7"/></svg>
+                className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-white/12 text-white/30 hover:text-white flex items-center justify-center transition-all backdrop-blur-sm cursor-pointer z-10">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M9 5l7 7-7 7"/></svg>
               </button>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-16 pb-5 sm:pb-7 px-4 sm:px-8">
-              <div className="max-w-3xl mx-auto text-center" onClick={(e) => e.stopPropagation()}>
-                <div className="inline-flex items-center gap-2 mb-1">
-                  <span className="w-5 h-px bg-brand-gold/50" />
-                  <span className="text-[10px] uppercase tracking-[0.25em] text-brand-gold/70 font-bold">{img.label}</span>
-                  <span className="w-5 h-px bg-brand-gold/50" />
-                </div>
-                <p className="text-white/35 text-sm sm:text-base font-light leading-relaxed max-w-lg mx-auto">{img.desc}</p>
-              </div>
+            <div className="absolute bottom-0 left-0 right-0 z-20 p-6 sm:p-8 text-center">
+              <p className="text-xs uppercase tracking-[0.25em] text-white/40 font-medium">{img.label}</p>
+              <p className="text-white/20 text-sm font-light max-w-md mx-auto mt-1.5 leading-relaxed">{img.desc}</p>
             </div>
           </div>
         )
