@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 const QUOTES = [
   'Donde el sol brilla más fuerte…',
@@ -18,7 +18,7 @@ const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
   opacity: 0.06 + (i % 6) * 0.04,
 }))
 
-const STAGGER_FAST = 0.35; const STAGGER_MED = 0.55; const STAGGER_SLOW = 0.75
+const C = 2 * Math.PI * 44
 
 export default function SplashScreen({ onFinish }) {
   const [progress, setProgress] = useState(0)
@@ -26,6 +26,8 @@ export default function SplashScreen({ onFinish }) {
   const [quoteFade, setQuoteFade] = useState(true)
   const [visible, setVisible] = useState(false)
   const [exiting, setExiting] = useState(false)
+
+  const offset = useMemo(() => C - (C * progress / 100), [progress])
 
   useEffect(() => { const t = setTimeout(() => setVisible(true), 60); return () => clearTimeout(t) }, [])
 
@@ -38,16 +40,11 @@ export default function SplashScreen({ onFinish }) {
   }, [])
 
   useEffect(() => {
-    const STEP_MS = 30
-    const FILL_MS = 2600
-    const step = 100 / (FILL_MS / STEP_MS)
+    const STEP_MS = 30; const FILL_MS = 2800; const step = 100 / (FILL_MS / STEP_MS)
     let cur = 0
     const t = setInterval(() => {
       cur += step
-      if (cur >= 100) {
-        cur = 100; clearInterval(t)
-        setTimeout(() => { setExiting(true); setTimeout(onFinish, 650) }, 500)
-      }
+      if (cur >= 100) { cur = 100; clearInterval(t); setTimeout(() => { setExiting(true); setTimeout(onFinish, 650) }, 500) }
       setProgress(Math.min(cur, 100))
     }, STEP_MS)
     return () => clearInterval(t)
@@ -67,16 +64,10 @@ export default function SplashScreen({ onFinish }) {
 
       <div className="absolute inset-0 pointer-events-none">
         {PARTICLES.map(p => (
-          <span
-            key={p.id}
-            className="absolute rounded-full bg-white"
-            style={{
-              width: p.size, height: p.size,
-              left: `${p.left}%`, bottom: '-10px',
-              opacity: p.opacity,
-              animation: `splash-float-up ${p.duration}s linear ${p.delay}s infinite`,
-            }}
-          />
+          <span key={p.id} className="absolute rounded-full bg-white" style={{
+            width: p.size, height: p.size, left: `${p.left}%`, bottom: '-10px',
+            opacity: p.opacity, animation: `splash-float-up ${p.duration}s linear ${p.delay}s infinite`,
+          }} />
         ))}
       </div>
 
@@ -85,13 +76,10 @@ export default function SplashScreen({ onFinish }) {
       }`}>
         {/* ── Logo ── */}
         <div className="relative animate-[splash-bounce-in_0.7s_cubic-bezier(0.34,1.56,0.64,1)_0.1s_both]">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-brand-gold/8 animate-[splash-ripple_2.5s_ease-out_infinite]" />
-            <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full border border-brand-teal/8 animate-[splash-ripple_2.5s_ease-out_infinite]" style={{ animationDelay: '1.25s' }} />
-          </div>
-          <div className="absolute inset-0 bg-brand-gold/20 blur-[60px] rounded-full animate-pulse" />
-          <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-[2rem] bg-gradient-to-br from-brand-gold/15 via-brand-teal/5 to-brand-night/50 backdrop-blur-2xl border border-brand-gold/20 flex items-center justify-center shadow-2xl shadow-brand-gold/20">
-            <svg viewBox="0 0 100 60" className="w-[7.5rem] sm:w-[8.5rem]">
+          <div className="absolute inset-0 bg-brand-gold/15 blur-[60px] rounded-full animate-pulse" />
+
+          <div className="relative w-32 h-32 sm:w-36 sm:h-36">
+            <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_20px_rgba(212,168,83,0.15)]">
               <defs>
                 <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#f0d78c"/><stop offset="50%" stopColor="#d4a853"/><stop offset="100%" stopColor="#b8892f"/>
@@ -100,15 +88,66 @@ export default function SplashScreen({ onFinish }) {
                   <stop offset="0%" stopColor="#14b8a6"/><stop offset="100%" stopColor="#0d9488"/>
                 </linearGradient>
               </defs>
-              <g transform="translate(0, 8)">
-                <path d="M23 40 C23 30, 21 20, 27 10" stroke="url(#sg)" strokeWidth="3" fill="none" strokeLinecap="round"/>
-                <path className="splash-sway-r" d="M27 10 C35 5, 44 10, 49 6" stroke="url(#st)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                <path className="splash-sway-l" d="M27 10 C19 5, 10 10, 5 6" stroke="url(#st)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                <path d="M27 10 C32 2, 38 -1, 40 -4" stroke="url(#sg)" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                <path d="M27 10 C22 2, 16 -1, 14 -4" stroke="url(#sg)" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                <path d="M27 10 C30 16, 36 19, 33 23" stroke="url(#st)" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                <path d="M27 10 C24 16, 18 19, 21 23" stroke="url(#st)" strokeWidth="2" fill="none" strokeLinecap="round"/>
-              </g>
+
+              {/* bg ring */}
+              <circle cx="50" cy="50" r="44" fill="none" stroke="white" strokeWidth="0.8" opacity="0.06"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.12s_both]" />
+
+              {/* progress ring */}
+              <circle cx="50" cy="50" r="44" fill="none" stroke="url(#sg)" strokeWidth="1.4" strokeLinecap="round"
+                strokeDasharray={C} strokeDashoffset={offset}
+                transform="rotate(-90 50 50)"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.15s_both] transition-[stroke-dashoffset] duration-200 ease-out" />
+
+              {/* inner ring */}
+              <circle cx="50" cy="50" r="40" fill="none" stroke="url(#st)" strokeWidth="0.5" opacity="0.12"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.18s_both]" />
+
+              {/* sun */}
+              <circle cx="50" cy="38" r="14" fill="url(#sg)" opacity="0.07"
+                className="animate-[splash-svg-scale_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.2s_both]" />
+              <circle cx="50" cy="38" r="7" fill="url(#sg)" opacity="0.14"
+                className="animate-[splash-svg-scale_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.25s_both]" />
+
+              {/* trunk */}
+              <path d="M50 72 Q48 52 50 28" stroke="url(#sg)" strokeWidth="2.8" fill="none" strokeLinecap="round"
+                className="animate-[splash-svg-up_0.4s_ease-out_0.28s_both]" />
+
+              {/* fronds - right */}
+              <path d="M50 30 Q66 14 76 18" stroke="url(#st)" strokeWidth="2.2" fill="none" strokeLinecap="round"
+                style={{ animation: 'splash-svg-up 0.4s ease-out 0.3s both' }} />
+              <path d="M50 30 Q68 24 78 24" stroke="url(#sg)" strokeWidth="2" fill="none" strokeLinecap="round"
+                style={{ animation: 'splash-svg-up 0.4s ease-out 0.33s both' }} />
+              <path d="M50 32 Q64 34 72 32" stroke="url(#st)" strokeWidth="1.6" fill="none" strokeLinecap="round"
+                style={{ animation: 'splash-svg-up 0.4s ease-out 0.36s both' }} />
+
+              {/* fronds - left */}
+              <path d="M50 30 Q34 14 24 18" stroke="url(#st)" strokeWidth="2.2" fill="none" strokeLinecap="round"
+                style={{ animation: 'splash-svg-up 0.4s ease-out 0.32s both' }} />
+              <path d="M50 30 Q32 24 22 24" stroke="url(#sg)" strokeWidth="2" fill="none" strokeLinecap="round"
+                style={{ animation: 'splash-svg-up 0.4s ease-out 0.35s both' }} />
+              <path d="M50 32 Q36 34 28 32" stroke="url(#st)" strokeWidth="1.6" fill="none" strokeLinecap="round"
+                style={{ animation: 'splash-svg-up 0.4s ease-out 0.38s both' }} />
+
+              {/* coconuts */}
+              <circle cx="47" cy="33" r="2.6" fill="url(#sg)"
+                className="animate-[splash-svg-pop_0.35s_cubic-bezier(0.34,1.56,0.64,1)_0.4s_both]" />
+              <circle cx="53" cy="32" r="2.3" fill="url(#sg)"
+                className="animate-[splash-svg-pop_0.35s_cubic-bezier(0.34,1.56,0.64,1)_0.43s_both]" />
+
+              {/* waves */}
+              <path d="M26 74 Q38 70 50 74 Q62 78 74 74" stroke="url(#st)" strokeWidth="1.4" fill="none" strokeLinecap="round" opacity="0.5"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.45s_both]" />
+              <path d="M28 78 Q40 74 50 78 Q60 82 72 78" stroke="url(#st)" strokeWidth="1.1" fill="none" strokeLinecap="round" opacity="0.3"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.48s_both]" />
+
+              {/* sparkles */}
+              <circle cx="16" cy="22" r="1.8" fill="url(#sg)" opacity="0.35"
+                className="animate-[splash-svg-pop_0.3s_ease-out_0.5s_both]" />
+              <circle cx="84" cy="28" r="1.4" fill="url(#sg)" opacity="0.25"
+                className="animate-[splash-svg-pop_0.3s_ease-out_0.53s_both]" />
+              <circle cx="70" cy="8" r="1" fill="url(#st)" opacity="0.25"
+                className="animate-[splash-svg-pop_0.3s_ease-out_0.56s_both]" />
             </svg>
           </div>
         </div>
@@ -127,17 +166,9 @@ export default function SplashScreen({ onFinish }) {
           </p>
         </div>
 
-        {/* ── Progress ── */}
+        {/* ── Quotes ── */}
         <div className="animate-[splash-title-up_0.5s_ease-out_0.9s_both]">
-          <div className="w-52 sm:w-60">
-            <div className="h-[3px] rounded-full bg-white/5 overflow-hidden shadow-[0_0_14px_rgba(212,168,83,0.15)]">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-brand-gold via-brand-teal to-brand-gold bg-[length:200%_100%] animate-gradient"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-          <p className={`text-white/25 text-xs font-light tracking-wide text-center mt-4 transition-all duration-400 ${quoteFade ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+          <p className={`text-white/25 text-xs font-light tracking-wide text-center transition-all duration-400 ${quoteFade ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
             {QUOTES[quoteIndex]}
           </p>
         </div>
