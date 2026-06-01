@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { supabase } from './supabase'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import { format, parseISO, isSameDay, startOfDay } from 'date-fns'
@@ -38,9 +37,15 @@ function Admin() {
   const [bloqueando, setBloqueando] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => setSesion(session))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => setSesion(session))
-    return () => subscription?.unsubscribe()
+    const stored = localStorage.getItem('admin_session')
+    if (stored) {
+      try {
+        const s = JSON.parse(stored)
+        if (s.expires > Date.now()) setSesion(s)
+        else localStorage.removeItem('admin_session')
+      } catch { localStorage.removeItem('admin_session') }
+    }
+    setCargando(false)
   }, [])
 
   useEffect(() => { if (sesion) cargarDatos() }, [sesion])
@@ -57,18 +62,26 @@ function Admin() {
     e.preventDefault()
     if (!email || !password) { addToast('Ingresa email y contraseña.', 'warning'); return }
     setAuthCargando(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    try {
+      const res = await fetch('/api/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operation: 'adminLogin', data: { email, password } }),
+      })
+      const json = await res.json()
+      if (!res.ok) { addToast(json.error || 'Credenciales incorrectas', 'error'); setAuthCargando(false); return }
+      const session = { email: json.user.email, expires: Date.now() + 86400000 * 3 }
+      localStorage.setItem('admin_session', JSON.stringify(session))
+      setSesion(session)
+      addToast('Sesión iniciada.', 'success')
+    } catch { addToast('Error de conexión', 'error') }
     setAuthCargando(false)
-    error ? addToast('Credenciales incorrectas', 'error') : addToast('Inicio de sesión exitoso.', 'success')
   }
 
-  const handleLogout = async () => { await supabase.auth.signOut(); addToast('Sesión cerrada.', 'info') }
-  const handleRegistro = async () => {
-    if (!email || !password) { addToast('Ingresa email y contraseña.', 'warning'); return }
-    setAuthCargando(true)
-    const { error } = await supabase.auth.signUp({ email, password })
-    setAuthCargando(false)
-    error ? addToast('Error: ' + error.message, 'error') : addToast('Usuario creado. Revisa tu correo.', 'success')
+  const handleLogout = () => {
+    localStorage.removeItem('admin_session')
+    setSesion(null)
+    addToast('Sesión cerrada.', 'info')
   }
 
   async function bloquearFecha(e) {
@@ -153,7 +166,7 @@ function Admin() {
   if (!sesion) {
     return (
       <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden bg-brand-night">
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-15">
           <img src="/hero_oasis_1777577991129.png" alt="" className="w-full h-full object-cover object-center" onError={(e) => e.target.src = "https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"} />
         </div>
         <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-brand-gold/5 rounded-full blur-[100px]" />
@@ -168,10 +181,7 @@ function Admin() {
             <input type="email" placeholder="Correo electrónico" className="input-white text-center" value={email} onChange={e => setEmail(e.target.value)} autoFocus />
             <input type="password" placeholder="Contraseña" className="input-white text-center" value={password} onChange={e => setPassword(e.target.value)} />
           </div>
-          <div className="flex flex-col gap-3">
-            <button type="submit" disabled={authCargando} className="btn-primary w-full text-center justify-center py-4">{authCargando ? 'Ingresando...' : 'Ingresar al Panel'}</button>
-            <button type="button" onClick={handleRegistro} disabled={authCargando} className="w-full glass-dark text-white/80 py-3 rounded-2xl font-semibold text-sm hover:bg-white/10 transition cursor-pointer">Crear cuenta nueva</button>
-          </div>
+          <button type="submit" disabled={authCargando} className="btn-primary w-full text-center justify-center py-4">{authCargando ? 'Ingresando...' : 'Ingresar al Panel'}</button>
         </form>
       </div>
     )
@@ -185,8 +195,8 @@ function Admin() {
           <p className="text-xs font-semibold text-white/30 uppercase tracking-widest mt-1">Gestión de Eventos</p>
         </div>
         <div className="px-6 py-4 flex items-center gap-3 border-b border-white/5">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-gold-dark flex items-center justify-center text-brand-night font-bold text-sm">{sesion.user?.email?.charAt(0).toUpperCase() || 'A'}</div>
-          <div className="truncate"><p className="text-sm font-bold text-white truncate">{sesion.user?.email}</p><button onClick={handleLogout} className="text-xs text-white/30 hover:text-brand-rose transition cursor-pointer">Cerrar Sesión</button></div>
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-gold-dark flex items-center justify-center text-brand-night font-bold text-sm">{sesion.email?.charAt(0).toUpperCase() || 'A'}</div>
+          <div className="truncate"><p className="text-sm font-bold text-white truncate">{sesion.email}</p><button onClick={handleLogout} className="text-xs text-white/30 hover:text-brand-rose transition cursor-pointer">Cerrar Sesión</button></div>
         </div>
         <nav className="flex-1 px-4 py-6 space-y-1.5">
           {NAV_ITEMS.map(tab => {
@@ -203,7 +213,7 @@ function Admin() {
 
       <main className="flex-1 p-4 md:p-10 pb-28 md:pb-10 h-screen overflow-y-auto">
         <div className="flex md:hidden items-center justify-between mb-6">
-          <div><h1 className="text-xl font-serif font-bold text-brand-dark">Piscina Oasis</h1><p className="text-xs text-brand-muted">{sesion.user?.email}</p></div>
+          <div><h1 className="text-xl font-serif font-bold text-brand-dark">Piscina Oasis</h1><p className="text-xs text-brand-muted">{sesion.email}</p></div>
           <button onClick={handleLogout} className="text-xs text-brand-muted hover:text-brand-rose transition cursor-pointer">Salir</button>
         </div>
         <div className="mb-8">

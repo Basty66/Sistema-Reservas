@@ -214,6 +214,16 @@ export default async function handler(req, res) {
         return res.json({ success: true })
       }
 
+      case 'adminLogin': {
+        const { email, password } = data
+        const adminPass = process.env.ADMIN_PASSWORD || 'admin123'
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@oasis.cl'
+        if (password !== adminPass) {
+          return res.status(401).json({ error: 'Credenciales incorrectas' })
+        }
+        return res.json({ success: true, user: { email: email || adminEmail } })
+      }
+
       default:
         return res.status(400).json({ error: 'Unknown operation' })
     }
