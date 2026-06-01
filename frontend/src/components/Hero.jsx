@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { SITE_TAGLINE, SITE_DESC } from '../config'
+import Reveal from './Reveal'
 
 const BG_IMAGES = [
   { src: '/hero_oasis_1777577991129.png', fallback: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' },
@@ -8,18 +9,23 @@ const BG_IMAGES = [
   { src: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80', fallback: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' },
 ]
 
+const floatingIcons = [
+  { icon: '🌴', top: '8%', left: '5%', size: 28, delay: 0, duration: 5 },
+  { icon: '🏊', top: '15%', right: '8%', size: 24, delay: 0.5, duration: 6 },
+  { icon: '🌊', top: '70%', left: '10%', size: 20, delay: 1, duration: 4.5 },
+  { icon: '☀️', top: '5%', left: '45%', size: 32, delay: 0.8, duration: 7 },
+  { icon: '🍹', top: '75%', right: '12%', size: 22, delay: 1.5, duration: 5.5 },
+  { icon: '🌺', top: '40%', left: '3%', size: 18, delay: 2, duration: 4 },
+  { icon: '🦜', top: '25%', right: '3%', size: 20, delay: 0.3, duration: 6.5 },
+]
+
 export default function Hero({ onVerPlanes, onVerGaleria }) {
   const [currentImg, setCurrentImg] = useState(0)
-  const [nextImg, setNextImg] = useState(1)
-  const [transitioning, setTransitioning] = useState(false)
+  const iconRefs = useRef([])
+  const heroRef = useRef(null)
 
   const advanceSlide = useCallback(() => {
-    setTransitioning(true)
-    setTimeout(() => {
-      setCurrentImg(prev => (prev + 1) % BG_IMAGES.length)
-      setNextImg(prev => (prev + 1) % BG_IMAGES.length)
-      setTransitioning(false)
-    }, 1000)
+    setCurrentImg(prev => (prev + 1) % BG_IMAGES.length)
   }, [])
 
   useEffect(() => {
@@ -27,41 +33,83 @@ export default function Hero({ onVerPlanes, onVerGaleria }) {
     return () => clearInterval(timer)
   }, [advanceSlide])
 
-  const handleError = (e, fallback) => {
-    e.target.src = fallback
-  }
+  useEffect(() => {
+    const innerEls = iconRefs.current
+    let rafId
+    const handleMouse = (e) => {
+      if (rafId) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        const mx = e.clientX / window.innerWidth
+        const my = e.clientY / window.innerHeight
+        innerEls.forEach((el, i) => {
+          if (!el) return
+          const icon = floatingIcons[i]
+          const nx = icon.left ? parseFloat(icon.left) / 100 : 1 - parseFloat(icon.right) / 100
+          const ny = parseFloat(icon.top) / 100
+          const strength = (icon.size / 30) * 100
+          const dx = (mx - nx) * strength
+          const dy = (my - ny) * strength
+          el.style.transform = `translate(${dx}px, ${dy}px)`
+        })
+      })
+    }
+    window.addEventListener('mousemove', handleMouse, { passive: true })
+    return () => { window.removeEventListener('mousemove', handleMouse); if (rafId) cancelAnimationFrame(rafId) }
+  }, [])
+
+  const handleError = (e, fallback) => { e.target.src = fallback }
 
   return (
-    <header className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Carousel backgrounds */}
+    <header ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-brand-night">
       <div className="absolute inset-0 z-0">
         {BG_IMAGES.map((img, i) => (
           <img
             key={i}
             src={img.src}
             alt=""
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-1000 ${
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-1500 ${
               i === currentImg ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
             }`}
             onError={(e) => handleError(e, img.fallback)}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-night/70 via-brand-night/20 to-brand-night/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-night/60 via-brand-night/20 to-brand-night/70" />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-gold/5 via-transparent to-brand-teal/5" />
       </div>
 
-      {/* Floating orbs */}
-      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-[10%] w-64 h-64 rounded-full bg-brand-gold/5 blur-3xl animate-orb" />
-        <div className="absolute bottom-1/4 right-[15%] w-80 h-80 rounded-full bg-brand-teal/5 blur-3xl animate-orb-delayed" />
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        <div className="absolute top-1/4 left-[10%] w-72 h-72 rounded-full bg-brand-gold/4 blur-[120px] animate-orb" />
+        <div className="absolute bottom-1/4 right-[15%] w-80 h-80 rounded-full bg-brand-teal/4 blur-[120px] animate-orb-delayed" />
       </div>
 
-      {/* Carousel indicators */}
+      <div className="absolute inset-0 z-[2] pointer-events-none">
+        {floatingIcons.map((item, i) => (
+          <div
+            key={i}
+            className="absolute pointer-events-auto group cursor-default"
+            style={{
+              top: item.top, left: item.left, right: item.right,
+              animation: `float-owl ${item.duration}s ease-in-out ${item.delay}s infinite`,
+            }}
+          >
+            <div
+              ref={(el) => { iconRefs.current[i] = el }}
+              className="transition-transform duration-[1200ms] ease-out will-change-transform"
+              style={{ transform: 'translate(0px, 0px)' }}
+            >
+              <span className="block text-[28px] sm:text-[32px] transition-all duration-500 ease-out group-hover:scale-[2] group-hover:drop-shadow-[0_0_20px_rgba(212,168,83,0.6)]">
+                {item.icon}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="absolute bottom-32 z-10 flex gap-2">
         {BG_IMAGES.map((_, i) => (
           <button
             key={i}
-            onClick={() => { setCurrentImg(i); setNextImg((i + 1) % BG_IMAGES.length) }}
+            onClick={() => setCurrentImg(i)}
             className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
               i === currentImg ? 'w-8 bg-brand-gold' : 'w-1.5 bg-white/30 hover:bg-white/50'
             }`}
@@ -69,51 +117,83 @@ export default function Hero({ onVerPlanes, onVerGaleria }) {
         ))}
       </div>
 
-      {/* Hero content */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 mt-16">
-        <div className="glass-light p-6 sm:p-10 md:p-14 rounded-[2rem] sm:rounded-[2.5rem] text-center animate-fadeIn shadow-2xl relative overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-40 h-40 bg-brand-gold/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-brand-teal/10 rounded-full blur-3xl" />
-
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-gold/20 to-brand-gold/10 text-brand-gold text-xs font-bold px-4 sm:px-5 py-2 rounded-full uppercase tracking-widest mb-4 sm:mb-6 border border-brand-gold/20">
-            <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse" />
-            Abierto para reservas
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-serif font-black text-brand-night mb-4 sm:mb-6 leading-[1.05] sm:leading-[0.95] tracking-tight">
-            <span className="block animate-slideUp stagger-1">{SITE_TAGLINE.split(',')[0]},</span>
-            <span className="block animate-slideUp stagger-2 text-brand-gold">{SITE_TAGLINE.split(',')[1]?.trim()}</span>
-          </h1>
-
-          <p className="text-brand-slate/80 text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-10 max-w-2xl mx-auto font-medium leading-relaxed animate-slideUp stagger-3 px-2">
-            {SITE_DESC}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-slideUp stagger-4 px-4 sm:px-0">
-            <button onClick={onVerPlanes} className="btn-primary text-base sm:text-lg px-8 sm:px-10 py-3.5 sm:py-4 shadow-2xl hover:shadow-brand-gold/30 w-full sm:w-auto">
-              Ver Planes
-            </button>
-            <button onClick={onVerGaleria} className="btn-secondary text-base sm:text-lg px-8 sm:px-10 py-3.5 sm:py-4 w-full sm:w-auto">
-              Ver Galería
-            </button>
-          </div>
-
-          <div className="mt-8 sm:mt-12 flex justify-center gap-6 sm:gap-12 text-brand-slate/60 animate-fadeIn stagger-5 flex-wrap">
-            {[
-              { value: '50+', label: 'Eventos' },
-              { value: '100%', label: 'Satisfacción' },
-              { value: '5', label: 'Años' },
-            ].map((stat, i) => (
-              <div key={i} className="text-center min-w-[80px]">
-                <p className="text-xl sm:text-2xl md:text-3xl font-black text-brand-dark">{stat.value}</p>
-                <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider mt-1 text-brand-muted">{stat.label}</p>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 mt-16 lg:mt-0">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+          <Reveal animation="fade-left" className="flex-1 w-full">
+            <div className="text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-gold/20 to-brand-gold/10 text-brand-gold text-xs font-bold px-4 sm:px-5 py-2 rounded-full uppercase tracking-widest mb-4 sm:mb-6 border border-brand-gold/20 backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse" />
+                Abierto para reservas
               </div>
-            ))}
-          </div>
+
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-serif font-black text-white mb-4 sm:mb-6 leading-[1.05] sm:leading-[0.95] tracking-tight">
+                <span className="block">{SITE_TAGLINE.split(',')[0]},</span>
+                <span className="block bg-gradient-to-r from-brand-gold via-brand-gold-light to-brand-gold bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(212,168,83,0.3)]">{SITE_TAGLINE.split(',')[1]?.trim()}</span>
+              </h1>
+
+              <p className="text-white/60 text-sm sm:text-base md:text-lg max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed mb-6 sm:mb-10">
+                {SITE_DESC}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+                <button onClick={onVerPlanes} className="group relative overflow-hidden text-brand-night font-bold px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-brand-gold/30 bg-brand-gold shadow-lg shadow-brand-gold/20 animate-neon hover:animate-none hover:shadow-xl hover:shadow-brand-gold/40 hover:-translate-y-0.5 text-sm sm:text-base cursor-pointer">
+                  <span className="absolute inset-0 bg-gradient-to-r from-brand-gold-light to-brand-gold -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                  <span className="relative z-10">Ver Planes</span>
+                </button>
+                <button onClick={onVerGaleria} className="group relative overflow-hidden text-white font-bold px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-white/15 bg-white/5 hover:bg-white/10 hover:shadow-xl hover:shadow-white/5 hover:-translate-y-0.5 text-sm sm:text-base cursor-pointer">
+                  <span className="relative z-10">Ver Galería</span>
+                </button>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal animation="fade-right" delay={200} className="flex-1 w-full max-w-lg hidden lg:block">
+            <div className="glass-dark rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/5 animate-float">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-3xl -z-10" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-teal/5 rounded-full blur-3xl -z-10" />
+
+              <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+                <div className="flex gap-2">
+                  <span className="w-3 h-3 bg-red-500/80 rounded-full animate-pulse" />
+                  <span className="w-3 h-3 bg-yellow-500/80 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
+                  <span className="w-3 h-3 bg-green-500/80 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
+                </div>
+                <span className="text-xs text-white/40 font-mono">piscinaoasis.cl</span>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-gold/20 hover:bg-white/[0.05]">
+                  <div className="text-xs text-white/40 mb-1">Espacios Disponibles</div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl font-bold font-heading text-emerald-400">4</div>
+                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                      <div className="bg-gradient-to-r from-emerald-400 to-emerald-300 h-full w-[80%] rounded-full animate-gradient" />
+                    </div>
+                    <span className="text-xs text-emerald-400/60">80%</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-gold/20 hover:bg-white/[0.05]">
+                    <div className="text-xs text-white/40 mb-1">Precio Desde</div>
+                    <div className="text-lg font-bold font-heading text-brand-gold">$200K</div>
+                  </div>
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-gold/20 hover:bg-white/[0.05]">
+                    <div className="text-xs text-white/40 mb-1">Capacidad</div>
+                    <div className="text-lg font-bold font-heading text-white">50+ pers</div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-white/[0.02] rounded-xl font-mono text-xs text-brand-gold/60 space-y-1 border border-white/5 backdrop-blur-sm">
+                  <p><span className="text-brand-teal">$</span> reserva = planBase <span className="text-brand-gold">+</span> extras<span className="inline-block ml-1 w-1.5 h-4 bg-brand-gold/80 align-middle animate-pulse" /></p>
+                  <p><span className="text-brand-teal">return</span> cotizacion<span className="text-brand-gold">.toPromise</span>()<span className="inline-block ml-1 w-1.5 h-4 bg-brand-gold/80 align-middle animate-pulse" /></p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 animate-bounce">
         <svg className="w-5 h-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />

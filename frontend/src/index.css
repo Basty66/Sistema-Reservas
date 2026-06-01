@@ -57,6 +57,31 @@ html { scroll-behavior: smooth; }
   from { opacity: 0; transform: translateY(20px); clip-path: inset(0 0 100% 0); }
   to { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
 }
+@keyframes neon-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(212, 168, 83, 0.15), 0 0 20px rgba(212, 168, 83, 0.05); }
+  50% { box-shadow: 0 0 16px rgba(212, 168, 83, 0.3), 0 0 40px rgba(212, 168, 83, 0.1); }
+}
+@keyframes float-owl {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-10px) translateX(5px); }
+  50% { transform: translateY(-5px) translateX(-3px); }
+  75% { transform: translateY(-14px) translateX(7px); }
+}
+@keyframes draw-check { to { stroke-dashoffset: 0; } }
+@keyframes shine { from { left: -100%; } to { left: 200%; } }
+@keyframes modal-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-content-in {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes modal-content-in-right {
+  from { opacity: 0; transform: scale(0.92) translateX(30px); }
+  to { opacity: 1; transform: scale(1) translateX(0); }
+}
+@keyframes fade-slide-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 @keyframes orb-move {
   0% { transform: translate(0, 0) scale(1); }
   25% { transform: translate(30px, -20px) scale(1.1); }
@@ -77,9 +102,13 @@ html { scroll-behavior: smooth; }
 .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
 .animate-gradient { background-size: 200% 200%; animation: gradient-shift 6s ease infinite; }
 .animate-border-glow { animation: border-glow 2s ease-in-out infinite; }
+.animate-neon { animation: neon-glow 2s ease-in-out infinite; }
 .animate-orb { animation: orb-move 12s ease-in-out infinite; }
 .animate-orb-delayed { animation: orb-move 15s ease-in-out infinite 2s; }
 .animate-reveal { animation: reveal 0.8s ease-out both; }
+.animate-modal-overlay { animation: modal-overlay-in 0.25s ease-out forwards; }
+.animate-modal-content { animation: modal-content-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-modal-content-right { animation: modal-content-in-right 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
 .stagger-1 { animation-delay: 0.1s; }
 .stagger-2 { animation-delay: 0.2s; }

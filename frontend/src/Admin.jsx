@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './supabase'
-import emailjs from '@emailjs/browser'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import { format, parseISO, isSameDay, startOfDay } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { EMAILJS } from './config'
 import { useToast } from './components/Toast'
 import {
   getReservas, getGastos, getFechasBloqueadas,
@@ -95,7 +93,13 @@ function Admin() {
     try {
       await updateReservaEstado(id, 'Confirmado')
       const reserva = reservas.find(r => r.id === id)
-      try { await emailjs.send(EMAILJS.SERVICE_ID, EMAILJS.TEMPLATE_APROBACION, { to_email: reserva.email_cliente, name: reserva.nombre_cliente, nombre: reserva.nombre_cliente, tiempo: format(new Date(), "dd/MM/yyyy - HH:mm"), mensaje: `¡Reserva APROBADA! Tu evento del ${reserva.fecha_evento} en Piscina Oasis ha sido confirmado. Te contactaremos para coordinar detalles.` }, EMAILJS.PUBLIC_KEY) } catch (_) {}
+      try {
+        await fetch('/api/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operation: 'sendApprovalEmail', data: { nombre_cliente: reserva.nombre_cliente, email_cliente: reserva.email_cliente, fecha_evento: reserva.fecha_evento, total_cotizado: reserva.total_cotizado } }),
+        })
+      } catch (_) {}
       if (reserva.telefono_cliente) { window.open(`https://wa.me/${reserva.telefono_cliente.replace(/\D/g, '')}?text=${encodeURIComponent('🎉 *RESERVA APROBADA* 🎉\n\nHola ' + reserva.nombre_cliente + ', tu reserva en Piscina Oasis ha sido confirmada.\n\n📅 ' + reserva.fecha_evento + '\n💰 $' + reserva.total_cotizado?.toLocaleString('es-CL') + '\n\n¡Nos vemos pronto! 🏡')}`, '_blank') }
       addToast('Reserva confirmada. Correo + WhatsApp enviados.', 'success')
       setReservas((await getReservas()) || [])
