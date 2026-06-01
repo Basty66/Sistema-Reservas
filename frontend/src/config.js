@@ -25,10 +25,12 @@ export const SERVICIOS_ADICIONALES = [
 ]
 
 export const GALLERY_IMAGES = [
-  { src: '/gal_piscina_1777578003893.png', label: 'Gran Piscina', desc: 'Nuestra piscina principal, ideal para refrescarte y disfrutar del sol. Con amplias áreas de descanso y vista privilegiada al valle.', span: 'lg:col-span-2 lg:row-span-2' },
-  { src: '/gal_quincho_1777578033924.png', label: 'Quincho Equipado', desc: 'Quincho completamente equipado con parrilla, horno y fogón. Perfecto para tus asados y reuniones familiares al aire libre.', span: '' },
-  { src: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', label: 'Multicancha', desc: 'Cancha multiuso para fútbol, básquetbol y vóleibol. El espacio ideal para la competencia y el deporte al aire libre.', span: '' },
-  { src: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80', label: 'Terrazas Lounge', desc: 'Terrazas con sombreado natural y mobiliario lounge. El punto de encuentro perfecto para conversar y relajarse bajo el sol.', span: 'lg:col-span-2' },
+  { src: '/gal_piscina_1777578003893.png', label: 'Gran Piscina', desc: 'Nuestra piscina principal, ideal para refrescarte y disfrutar del sol. Con amplias áreas de descanso y vista privilegiada al valle.' },
+  { src: '/gal_quincho_1777578033924.png', label: 'Quincho Equipado', desc: 'Quincho completamente equipado con parrilla, horno y fogón. Perfecto para tus asados y reuniones familiares al aire libre.' },
+  { src: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', label: 'Multicancha', desc: 'Cancha multiuso para fútbol, básquetbol y vóleibol. El espacio ideal para la competencia y el deporte al aire libre.' },
+  { src: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80', label: 'Terrazas Lounge', desc: 'Terrazas con sombreado natural y mobiliario lounge. El punto de encuentro perfecto para conversar y relajarse bajo el sol.' },
+  { src: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', label: 'Área de Descanso', desc: 'Espacios diseñados para la relajación total con cómodas lounges y sombreado natural junto a la piscina.' },
+  { src: 'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', label: 'Iluminación LED', desc: 'Sistema de iluminación LED multicolor que transforma el ambiente al caer la noche. Ideal para eventos nocturnos mágicos.' },
 ]
 
 export const SITE_NAME = 'Piscina Oasis'

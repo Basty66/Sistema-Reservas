@@ -162,6 +162,14 @@ html { scroll-behavior: smooth; }
   24% { opacity: 0.7; }
   38% { opacity: 0; }
 }
+@keyframes clip-reveal {
+  from { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); opacity: 0; }
+  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+}
+@keyframes lb-enter {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
 
 .animate-fadeIn { animation: fadeIn 0.5s ease-out both; }
 .animate-slideUp { animation: slideUp 0.6s ease-out both; }
