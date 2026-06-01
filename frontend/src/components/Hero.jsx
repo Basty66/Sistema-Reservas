@@ -194,9 +194,16 @@ export default function Hero({ onVerPlanes, onVerGaleria }) {
                   </div>
                 </div>
 
-                <div className="p-4 bg-white/[0.02] rounded-xl font-mono text-xs text-brand-gold/60 space-y-1 border border-white/5 backdrop-blur-sm">
-                  <p><span className="text-brand-teal">$</span> reserva = planBase <span className="text-brand-gold">+</span> extras<span className="inline-block ml-1 w-1.5 h-4 bg-brand-gold/80 align-middle animate-pulse" /></p>
-                  <p><span className="text-brand-teal">return</span> cotizacion<span className="text-brand-gold">.toPromise</span>()<span className="inline-block ml-1 w-1.5 h-4 bg-brand-gold/80 align-middle animate-pulse" /></p>
+                <div className="p-4 bg-white/[0.02] rounded-xl font-mono text-xs text-brand-gold/60 space-y-1.5 border border-white/5 backdrop-blur-sm">
+                  <p>
+                    <svg className="w-3.5 h-3.5 inline-block align-middle text-amber-400 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                    <span className="text-white/50">28°C ·</span> Sensación <span className="text-brand-gold font-bold">30°C</span><span className="inline-block ml-1 w-1.5 h-4 bg-brand-gold/80 align-middle animate-pulse" />
+                  </p>
+                  <p>
+                    <svg className="w-3.5 h-3.5 inline-block align-middle text-cyan-300 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+                    <span className="text-white/50">Agua</span><span className="text-white/70"> 26°C ·</span> Cristalina
+                  </p>
+                  <p className="text-white/20 text-[10px] pt-0.5">Villa Alegre — Mejor clima del valle</p>
                 </div>
               </div>
             </div>
