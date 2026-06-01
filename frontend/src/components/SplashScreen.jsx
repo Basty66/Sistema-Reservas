@@ -28,6 +28,10 @@ export default function SplashScreen({ onFinish }) {
   const [exiting, setExiting] = useState(false)
 
   const offset = useMemo(() => C - (C * progress / 100), [progress])
+  const dotPos = useMemo(() => {
+    const a = (progress / 100) * 2 * Math.PI
+    return { x: 50 + 44 * Math.sin(a), y: 50 - 44 * Math.cos(a) }
+  }, [progress])
 
   useEffect(() => { const t = setTimeout(() => setVisible(true), 60); return () => clearTimeout(t) }, [])
 
@@ -87,17 +91,30 @@ export default function SplashScreen({ onFinish }) {
                 <linearGradient id="st" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#14b8a6"/><stop offset="100%" stopColor="#0d9488"/>
                 </linearGradient>
+                <filter id="rg" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="2.5" result="b"/>
+                  <feComponentTransfer in="b" result="g">
+                    <feFuncA type="linear" slope="0.6"/>
+                  </feComponentTransfer>
+                  <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
               </defs>
 
               {/* bg ring */}
-              <circle cx="50" cy="50" r="44" fill="none" stroke="white" strokeWidth="0.8" opacity="0.06"
+              <circle cx="50" cy="50" r="44" fill="none" stroke="white" strokeWidth="1.2" opacity="0.12"
                 className="animate-[splash-svg-fade_0.4s_ease-out_0.12s_both]" />
 
               {/* progress ring */}
-              <circle cx="50" cy="50" r="44" fill="none" stroke="url(#sg)" strokeWidth="1.4" strokeLinecap="round"
+              <circle cx="50" cy="50" r="44" fill="none" stroke="url(#sg)" strokeWidth="2.8" strokeLinecap="round"
                 strokeDasharray={C} strokeDashoffset={offset}
-                transform="rotate(-90 50 50)"
-                className="animate-[splash-svg-fade_0.4s_ease-out_0.15s_both] transition-[stroke-dashoffset] duration-200 ease-out" />
+                transform="rotate(-90 50 50)" filter="url(#rg)"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.15s_both] transition-[stroke-dashoffset] duration-100 ease-linear" />
+
+              {/* progress end dot */}
+              <circle cx={dotPos.x} cy={dotPos.y} r="3.5" fill="url(#sg)" filter="url(#rg)"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.15s_both]" />
+              <circle cx={dotPos.x} cy={dotPos.y} r="1.5" fill="white" opacity="0.6"
+                className="animate-[splash-svg-fade_0.4s_ease-out_0.15s_both]" />
 
               {/* inner ring */}
               <circle cx="50" cy="50" r="40" fill="none" stroke="url(#st)" strokeWidth="0.5" opacity="0.12"
