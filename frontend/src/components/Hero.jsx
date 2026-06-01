@@ -158,52 +158,132 @@ export default function Hero({ onVerPlanes, onVerGaleria }) {
           </Reveal>
 
           <Reveal animation="fade-right" delay={200} className="flex-1 w-full max-w-lg hidden lg:block">
-            <div className="glass-dark rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/5 animate-float">
+            <div className="glass-dark rounded-2xl shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/5 animate-float group">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-3xl -z-10" />
               <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-teal/5 rounded-full blur-3xl -z-10" />
 
-              <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
                 <div className="flex gap-2">
-                  <span className="w-3 h-3 bg-red-500/80 rounded-full animate-pulse" />
-                  <span className="w-3 h-3 bg-yellow-500/80 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
-                  <span className="w-3 h-3 bg-green-500/80 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
+                  <span className="w-3 h-3 rounded-full bg-red-500/80 animate-pulse" />
+                  <span className="w-3 h-3 rounded-full bg-yellow-500/80 animate-pulse" style={{ animationDelay: '0.3s' }} />
+                  <span className="w-3 h-3 rounded-full bg-green-500/80 animate-pulse" style={{ animationDelay: '0.6s' }} />
                 </div>
-                <span className="text-xs text-white/40 font-mono">piscinaoasis.cl</span>
+                <span className="text-[10px] text-white/30 font-mono">piscinaoasis.cl</span>
               </div>
 
-              <div className="space-y-4">
-                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-gold/20 hover:bg-white/[0.05]">
-                  <div className="text-xs text-white/40 mb-1">Espacios Disponibles</div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl font-bold font-heading text-emerald-400">4</div>
-                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
-                      <div className="bg-gradient-to-r from-emerald-400 to-emerald-300 h-full w-[80%] rounded-full animate-gradient" />
+              <div className="relative h-[340px] overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-sky-400/8 via-cyan-400/5 to-brand-night/30" />
+
+                <div className="absolute top-5 right-7">
+                  <div className="w-16 h-16 rounded-full bg-amber-300/8 blur-xl absolute -inset-3 animate-sun-pulse" />
+                  <svg className="w-7 h-7 text-amber-300/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                  </svg>
+                </div>
+
+                <svg className="absolute top-4 left-6 w-20 h-8 text-white/6" viewBox="0 0 80 20" fill="currentColor">
+                  <ellipse cx="20" cy="12" rx="16" ry="7" />
+                  <ellipse cx="45" cy="10" rx="18" ry="8" />
+                  <ellipse cx="33" cy="8" rx="14" ry="6" />
+                </svg>
+                <svg className="absolute top-10 left-[30%] w-14 h-6 text-white/4" viewBox="0 0 60 16" fill="currentColor">
+                  <ellipse cx="15" cy="10" rx="12" ry="5" />
+                  <ellipse cx="35" cy="8" rx="14" ry="6" />
+                </svg>
+
+                <div className="absolute top-[27%] left-1/2 -translate-x-1/2">
+                  <svg className="text-white/20" width="140" height="16" viewBox="0 0 140 16" fill="currentColor">
+                    <rect x="8" y="0" width="132" height="3" rx="1.5" />
+                    <rect x="20" y="3" width="4" height="13" />
+                    <rect x="24" y="6" width="10" height="1.5" opacity="0.4" />
+                    <rect x="24" y="10" width="10" height="1.5" opacity="0.4" />
+                  </svg>
+                </div>
+
+                <div className="absolute top-[31%] left-[43%] w-10 h-16 animate-dive-loop pointer-events-none">
+                  <svg viewBox="0 0 24 36" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white/80 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+                    <circle cx="12" cy="4" r="2.5" />
+                    <path d="M12 6.5 v9" />
+                    <path d="M10 8.5 l-5 -4" />
+                    <path d="M14 8.5 l5 -4" />
+                    <path d="M11 15 l-3 8" />
+                    <path d="M13 15 l3 8" />
+                  </svg>
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 h-[48%]">
+                  <div className="absolute inset-0 bg-gradient-to-t from-cyan-600/40 via-blue-400/20 to-transparent" />
+
+                  <div className="absolute -top-2 left-0 w-full h-10 overflow-hidden">
+                    <svg className="w-[200%] h-full text-cyan-300/25 animate-wave-slow" viewBox="0 0 1200 40" preserveAspectRatio="none" fill="currentColor">
+                      <path d="M0 20 C40 0 80 40 120 20 C160 0 200 40 240 20 C280 0 320 40 360 20 C400 0 440 40 480 20 C520 0 560 40 600 20 C640 0 680 40 720 20 C760 0 800 40 840 20 C880 0 920 40 960 20 C1000 0 1040 40 1080 20 C1120 0 1160 40 1200 20 L1200 40 L0 40 Z" />
+                    </svg>
+                  </div>
+
+                  <div className="absolute top-0 left-0 w-full h-6 overflow-hidden">
+                    <svg className="w-[200%] h-full text-white/20 animate-wave-move" viewBox="0 0 1200 24" preserveAspectRatio="none" fill="currentColor">
+                      <path d="M0 12 C25 0 50 24 75 12 C100 0 125 24 150 12 C175 0 200 24 225 12 C250 0 275 24 300 12 C325 0 350 24 375 12 C400 0 425 24 450 12 C475 0 500 24 525 12 C550 0 575 24 600 12 C625 0 650 24 675 12 C700 0 725 24 750 12 C775 0 800 24 825 12 C850 0 875 24 900 12 C925 0 950 24 975 12 C1000 0 1025 24 1050 12 C1075 0 1100 24 1125 12 C1150 0 1175 24 1200 12 L1200 24 L0 24 Z" />
+                    </svg>
+                  </div>
+
+                  <div className="absolute bottom-[48%] left-1/2 -translate-x-1/2">
+                    {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+                      <span
+                        key={i}
+                        className="absolute w-[5px] h-[5px] rounded-full bg-white/40 animate-splash-particle"
+                        style={{
+                          left: `${(i - 3) * 7}px`,
+                          animationDelay: `${3.2 + i * 0.1}s`,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="absolute bottom-[22%] right-[12%] w-14 h-14 animate-float-bob">
+                    <svg viewBox="0 0 48 48" fill="none">
+                      <circle cx="24" cy="24" r="20" stroke="#f472b6" strokeWidth="3.5" opacity="0.6" />
+                      <circle cx="24" cy="24" r="20" stroke="white" strokeWidth="1.5" opacity="0.15" />
+                      <circle cx="24" cy="24" r="20" stroke="#f472b6" strokeWidth="3" strokeDasharray="10 7" opacity="0.35" />
+                    </svg>
+                  </div>
+
+                  <div className="absolute bottom-[8%] left-[12%] w-10 h-10 animate-float-bob" style={{ animationDelay: '1s' }}>
+                    <svg viewBox="0 0 40 40" fill="none">
+                      <circle cx="20" cy="20" r="16" stroke="#fb923c" strokeWidth="3" opacity="0.5" />
+                      <circle cx="20" cy="20" r="16" stroke="white" strokeWidth="1.5" opacity="0.12" />
+                      <circle cx="20" cy="20" r="16" stroke="#fb923c" strokeWidth="2.5" strokeDasharray="8 6" opacity="0.3" />
+                    </svg>
+                  </div>
+
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      className="absolute w-1 h-1 rounded-full bg-white/15 animate-bubble"
+                      style={{
+                        left: `${28 + i * 18}%`,
+                        bottom: '5%',
+                        animationDelay: `${i * 1.8}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brand-night/95 via-brand-night/60 to-transparent pt-14 pb-4 px-5">
+                  <div className="grid grid-cols-3 gap-1">
+                    <div className="text-left">
+                      <div className="text-[10px] text-white/35 uppercase tracking-widest mb-0.5 font-medium">Desde</div>
+                      <div className="text-xl font-bold font-heading text-brand-gold drop-shadow-[0_0_12px_rgba(212,168,83,0.25)]">$200K</div>
                     </div>
-                    <span className="text-xs text-emerald-400/60">80%</span>
+                    <div className="text-center">
+                      <div className="text-[10px] text-white/35 uppercase tracking-widest mb-0.5 font-medium">Capacidad</div>
+                      <div className="text-xl font-bold font-heading text-white">50+</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[10px] text-white/35 uppercase tracking-widest mb-0.5 font-medium">Clima</div>
+                      <div className="text-xl font-bold font-heading text-amber-300 drop-shadow-[0_0_10px_rgba(252,211,77,0.2)]">28°</div>
+                    </div>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-gold/20 hover:bg-white/[0.05]">
-                    <div className="text-xs text-white/40 mb-1">Precio Desde</div>
-                    <div className="text-lg font-bold font-heading text-brand-gold">$200K</div>
-                  </div>
-                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-gold/20 hover:bg-white/[0.05]">
-                    <div className="text-xs text-white/40 mb-1">Capacidad</div>
-                    <div className="text-lg font-bold font-heading text-white">50+ pers</div>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-white/[0.02] rounded-xl font-mono text-xs text-brand-gold/60 space-y-1.5 border border-white/5 backdrop-blur-sm">
-                  <p>
-                    <svg className="w-3.5 h-3.5 inline-block align-middle text-amber-400 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-                    <span className="text-white/50">28°C ·</span> Sensación <span className="text-brand-gold font-bold">30°C</span><span className="inline-block ml-1 w-1.5 h-4 bg-brand-gold/80 align-middle animate-pulse" />
-                  </p>
-                  <p>
-                    <svg className="w-3.5 h-3.5 inline-block align-middle text-cyan-300 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
-                    <span className="text-white/50">Agua</span><span className="text-white/70"> 26°C ·</span> Cristalina
-                  </p>
-                  <p className="text-white/20 text-[10px] pt-0.5">Villa Alegre — Mejor clima del valle</p>
                 </div>
               </div>
             </div>
