@@ -20,12 +20,24 @@ const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
 
 const C = 2 * Math.PI * 44
 
+const BURST = Array.from({ length: 24 }, (_, i) => {
+  const angle = (i / 24) * 360 + (i % 3) * 5
+  const dist = 55 + (i % 6) * 18
+  return {
+    id: i, angle, dist,
+    size: 1.8 + (i % 4) * 1.2,
+    color: i % 4 === 0 ? '#d4a853' : i % 4 === 1 ? '#f0d78c' : i % 4 === 2 ? '#14b8a6' : '#ffffff',
+    delay: (i % 6) * 0.04,
+  }
+})
+
 export default function SplashScreen({ onFinish }) {
   const [progress, setProgress] = useState(0)
   const [quoteIndex, setQuoteIndex] = useState(0)
   const [quoteFade, setQuoteFade] = useState(true)
   const [visible, setVisible] = useState(false)
   const [exiting, setExiting] = useState(false)
+  const [exploding, setExploding] = useState(false)
 
   const offset = useMemo(() => C - (C * progress / 100), [progress])
   const dotPos = useMemo(() => {
@@ -48,7 +60,10 @@ export default function SplashScreen({ onFinish }) {
     let cur = 0
     const t = setInterval(() => {
       cur += step
-      if (cur >= 100) { cur = 100; clearInterval(t); setTimeout(() => { setExiting(true); setTimeout(onFinish, 650) }, 500) }
+      if (cur >= 100) {
+        cur = 100; clearInterval(t); setExploding(true)
+        setTimeout(() => { setExiting(true); setTimeout(onFinish, 650) }, 800)
+      }
       setProgress(Math.min(cur, 100))
     }, STEP_MS)
     return () => clearInterval(t)
@@ -166,6 +181,31 @@ export default function SplashScreen({ onFinish }) {
               <circle cx="70" cy="8" r="1" fill="url(#st)" opacity="0.25"
                 className="animate-[splash-svg-pop_0.3s_ease-out_0.56s_both]" />
             </svg>
+
+            {/* ── Explosion overlay ── */}
+            {exploding && (
+              <div className="absolute inset-0 pointer-events-none z-10">
+                <div className="absolute inset-0 rounded-[2rem] bg-white/[0.08] animate-[explosion-flash_0.4s_ease-out_forwards]" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute w-32 h-32 rounded-full border-2 border-brand-gold/50 animate-[explosion-ring_0.7s_ease-out_forwards]" />
+                  <div className="absolute w-32 h-32 rounded-full border border-brand-teal/30 animate-[explosion-ring_0.7s_ease-out_0.1s_forwards]" />
+                </div>
+                {BURST.map(p => (
+                  <div key={p.id}
+                    className="absolute rounded-full"
+                    style={{
+                      width: p.size, height: p.size,
+                      top: '50%', left: '50%',
+                      marginTop: -p.size / 2, marginLeft: -p.size / 2,
+                      background: p.color, boxShadow: `0 0 4px ${p.color}`,
+                      '--dx': `${Math.cos(p.angle * Math.PI / 180) * p.dist}px`,
+                      '--dy': `${Math.sin(p.angle * Math.PI / 180) * p.dist}px`,
+                      animation: `explosion-particle 0.65s cubic-bezier(.17,.67,.12,.99) ${p.delay}s forwards`,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
