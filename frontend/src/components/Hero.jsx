@@ -9,14 +9,24 @@ const BG_IMAGES = [
   { src: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80', fallback: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' },
 ]
 
+const ICONS = {
+  palm: (s) => <svg key="palm" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-gold drop-shadow-[0_0_6px_rgba(212,168,83,0.4)]"><path d="M12 2v12M12 14c-4-2-8-1-10 2M12 14c4-2 8-1 10 2M12 9c-2-2-2-5 0-7M12 9c2-2 2-5 0-7"/><path d="M12 14v6M8 22h8"/></svg>,
+  pool: (s) => <svg key="pool" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-brand-teal drop-shadow-[0_0_6px_rgba(20,168,150,0.4)]"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>,
+  wave: (s) => <svg key="wave" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-cyan-300/70 drop-shadow-[0_0_6px_rgba(103,232,249,0.3)]"><path d="M2 12c3-3 6 0 10 3s7-3 10 0"/><path d="M2 18c3-3 6 0 10 3s7-3 10 0"/></svg>,
+  sun: (s) => <svg key="sun" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-amber-300 drop-shadow-[0_0_8px_rgba(252,211,77,0.5)]"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>,
+  drink: (s) => <svg key="drink" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-brand-gold/80 drop-shadow-[0_0_6px_rgba(212,168,83,0.3)]"><path d="M6 2l8 10v8c0 1.1.9 2 2 2h2"/><path d="M18 22c1.1 0 2-.9 2-2v-8L12 2"/><path d="M6 12h12"/></svg>,
+  flower: (s) => <svg key="flower" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-pink-300/80 drop-shadow-[0_0_6px_rgba(249,168,212,0.3)]"><circle cx="12" cy="12" r="3"/><path d="M12 2c0 0 2 4 0 10M12 22c0 0-2-4 0-10M2 12c0 0 4 2 10 0M22 12c0 0-4-2-10 0"/></svg>,
+  bird: (s) => <svg key="bird" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-emerald-300/70 drop-shadow-[0_0_6px_rgba(110,231,183,0.3)]"><path d="M3 12c0-5 4-9 9-9s9 4 9 9-4 9-9 9"/><path d="M12 3c4 0 7 3 7 7"/><path d="M5 17c2-2 5-3 8-3s6 1 8 3"/><circle cx="9" cy="10" r="1" fill="currentColor"/></svg>,
+}
+
 const floatingIcons = [
-  { icon: '🌴', top: '8%', left: '5%', size: 28, delay: 0, duration: 5 },
-  { icon: '🏊', top: '15%', right: '8%', size: 24, delay: 0.5, duration: 6 },
-  { icon: '🌊', top: '70%', left: '10%', size: 20, delay: 1, duration: 4.5 },
-  { icon: '☀️', top: '5%', left: '45%', size: 32, delay: 0.8, duration: 7 },
-  { icon: '🍹', top: '75%', right: '12%', size: 22, delay: 1.5, duration: 5.5 },
-  { icon: '🌺', top: '40%', left: '3%', size: 18, delay: 2, duration: 4 },
-  { icon: '🦜', top: '25%', right: '3%', size: 20, delay: 0.3, duration: 6.5 },
+  { id: 'palm', top: '8%', left: '5%', size: 28, delay: 0, duration: 5 },
+  { id: 'pool', top: '15%', right: '8%', size: 24, delay: 0.5, duration: 6 },
+  { id: 'wave', top: '68%', left: '10%', size: 22, delay: 1, duration: 4.5 },
+  { id: 'sun', top: '4%', left: '44%', size: 34, delay: 0.8, duration: 7 },
+  { id: 'drink', top: '75%', right: '12%', size: 24, delay: 1.5, duration: 5.5 },
+  { id: 'flower', top: '38%', left: '2%', size: 20, delay: 2, duration: 4 },
+  { id: 'bird', top: '24%', right: '2%', size: 22, delay: 0.3, duration: 6.5 },
 ]
 
 export default function Hero({ onVerPlanes, onVerGaleria }) {
@@ -94,12 +104,12 @@ export default function Hero({ onVerPlanes, onVerGaleria }) {
           >
             <div
               ref={(el) => { iconRefs.current[i] = el }}
-              className="transition-transform duration-[1200ms] ease-out will-change-transform"
+              className="transition-transform duration-[1200ms] ease-out will-change-transform flex items-center justify-center"
               style={{ transform: 'translate(0px, 0px)' }}
             >
-              <span className="block text-[28px] sm:text-[32px] transition-all duration-500 ease-out group-hover:scale-[2] group-hover:drop-shadow-[0_0_20px_rgba(212,168,83,0.6)]">
-                {item.icon}
-              </span>
+              <div className="transition-all duration-500 ease-out group-hover:scale-[2] group-hover:drop-shadow-[0_0_20px_rgba(212,168,83,0.6)]">
+                {ICONS[item.id](item.size)}
+              </div>
             </div>
           </div>
         ))}
