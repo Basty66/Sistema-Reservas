@@ -19,7 +19,7 @@ const ContratoPDF = ({ datos }) => (
         <Page size="A4" style={styles.page}>
             <View style={styles.header}>
                 <Text style={styles.title}>CONTRATO DE RESERVA</Text>
-                <Text style={{ fontSize: 10, color: '#2563eb' }}>Parcela Eventos 🏡</Text>
+                <Text style={{ fontSize: 10, color: '#2563eb' }}>Parcela de Eventos — Piscina Oasis</Text>
             </View>
 
             <View style={styles.section}>

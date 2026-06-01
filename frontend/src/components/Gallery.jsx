@@ -75,7 +75,7 @@ export default function Gallery() {
               onClick={() => setLightboxIndex(null)}
               className="absolute top-4 sm:top-6 right-4 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 glass-dark text-white rounded-full flex items-center justify-center hover:bg-white/20 transition cursor-pointer text-xl shadow-2xl z-10 border border-white/10"
             >
-              ✕
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
 
             <button

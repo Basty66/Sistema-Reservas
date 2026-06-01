@@ -10,6 +10,7 @@ import useAnimatedNumber from '../hooks/useAnimatedNumber'
 import { RESERVA, SERVICIOS_ADICIONALES, SITE_NAME } from '../config'
 import { useToast } from './Toast'
 import { createReserva } from '../api'
+import { IcoCheck, IcoPlus, IcoMinus, IcoArrowRight, IcoArrowLeft } from '../icons'
 
 const STEPS = [
   { num: 1, label: 'Plan y Fecha', icon: 'calendar' },
@@ -274,7 +275,7 @@ export default function QuotationModal({ plan, onClose, fechasConfirmadas, fecha
                   <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 ${
                     step > s.num ? 'bg-brand-teal text-white' : step === s.num ? 'bg-brand-gold text-brand-night' : 'bg-gray-100 text-gray-400'
                   }`}>
-                    {step > s.num ? '✓' : s.num}
+                    {step > s.num ? <IcoCheck className="w-4 h-4" /> : s.num}
                   </div>
                   <div className="hidden sm:block">
                     <p className={`text-xs font-bold uppercase tracking-wider ${step >= s.num ? 'text-brand-dark' : 'text-gray-400'}`}>{s.label}</p>
@@ -296,9 +297,9 @@ export default function QuotationModal({ plan, onClose, fechasConfirmadas, fecha
                   <div>
                     <label className="label-premium">Cantidad de Invitados</label>
                     <div className="flex items-center bg-white border-2 border-gray-100 rounded-xl p-1.5 focus-within:border-brand-teal transition-all">
-                      <button onClick={() => setNumPersonas(Math.max(1, numPersonas - 1))} className="w-11 h-11 rounded-lg bg-gray-50 hover:bg-gray-200 text-brand-dark font-black text-lg flex items-center justify-center transition cursor-pointer">−</button>
+                      <button onClick={() => setNumPersonas(Math.max(1, numPersonas - 1))} className="w-11 h-11 rounded-lg bg-gray-50 hover:bg-gray-200 text-brand-dark flex items-center justify-center transition cursor-pointer"><IcoMinus className="w-5 h-5" /></button>
                       <input type="number" value={numPersonas} readOnly className="w-full bg-transparent text-center font-black text-brand-dark text-lg outline-none" />
-                      <button onClick={() => setNumPersonas(numPersonas + 1)} className="w-11 h-11 rounded-lg bg-gray-50 hover:bg-gray-200 text-brand-dark font-black text-lg flex items-center justify-center transition cursor-pointer">+</button>
+                      <button onClick={() => setNumPersonas(numPersonas + 1)} className="w-11 h-11 rounded-lg bg-gray-50 hover:bg-gray-200 text-brand-dark flex items-center justify-center transition cursor-pointer"><IcoPlus className="w-5 h-5" /></button>
                     </div>
                     <p className="text-xs text-brand-muted mt-2">*Extra desde {RESERVA.PERSONAS_BASE} pers.</p>
                   </div>
@@ -333,7 +334,7 @@ export default function QuotationModal({ plan, onClose, fechasConfirmadas, fecha
                   className="group relative overflow-hidden text-brand-night font-bold px-8 py-3.5 rounded-xl transition-all duration-500 ease-out border border-brand-gold/30 bg-brand-gold shadow-lg shadow-brand-gold/20 hover:shadow-xl hover:shadow-brand-gold/30 cursor-pointer"
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-brand-gold-light to-brand-gold -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-                  <span className="relative z-10 flex items-center gap-2">Continuar <span className="text-lg">→</span></span>
+                  <span className="relative z-10 flex items-center gap-2">Continuar <IcoArrowRight className="w-5 h-5" /></span>
                 </button>
               </div>
             </div>
@@ -354,14 +355,14 @@ export default function QuotationModal({ plan, onClose, fechasConfirmadas, fecha
                   onClick={() => setStep(1)}
                   className="px-8 py-3.5 rounded-xl border border-gray-200 text-brand-muted font-bold hover:bg-gray-50 transition-all cursor-pointer"
                 >
-                  ← Atrás
+                  <IcoArrowLeft className="w-4 h-4" /> Atrás
                 </button>
                 <button
                   onClick={() => setStep(3)}
                   className="group relative overflow-hidden text-brand-night font-bold px-8 py-3.5 rounded-xl transition-all duration-500 ease-out border border-brand-gold/30 bg-brand-gold shadow-lg shadow-brand-gold/20 hover:shadow-xl hover:shadow-brand-gold/30 cursor-pointer"
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-brand-gold-light to-brand-gold -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-                  <span className="relative z-10 flex items-center gap-2">Continuar <span className="text-lg">→</span></span>
+                  <span className="relative z-10 flex items-center gap-2">Continuar <IcoArrowRight className="w-5 h-5" /></span>
                 </button>
               </div>
             </div>
@@ -392,7 +393,7 @@ export default function QuotationModal({ plan, onClose, fechasConfirmadas, fecha
               </div>
 
               <div className="flex justify-between items-center">
-                <button onClick={() => setStep(2)} className="px-8 py-3.5 rounded-xl border border-gray-200 text-brand-muted font-bold hover:bg-gray-50 transition-all cursor-pointer">← Atrás</button>
+                <button onClick={() => setStep(2)} className="px-8 py-3.5 rounded-xl border border-gray-200 text-brand-muted font-bold hover:bg-gray-50 transition-all cursor-pointer inline-flex items-center gap-1.5"><IcoArrowLeft className="w-4 h-4" /> Atrás</button>
                 <div className="flex items-center gap-4">
                   <div className="text-right">
                     <p className="text-xs text-brand-muted font-bold uppercase tracking-wider">Total</p>
@@ -408,7 +409,7 @@ export default function QuotationModal({ plan, onClose, fechasConfirmadas, fecha
                     {guardando ? (
                       <><span className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" /> Enviando...</>
                     ) : (
-                      <><span className="relative z-10">Confirmar Reserva</span> <span className="text-lg relative z-10">→</span></>
+                      <><span className="relative z-10">Confirmar Reserva</span> <IcoArrowRight className="w-5 h-5 relative z-10" /></>
                     )}
                   </button>
                 </div>

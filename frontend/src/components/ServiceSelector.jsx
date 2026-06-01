@@ -1,10 +1,14 @@
 import { SERVICIOS_ADICIONALES } from '../config'
+import { IcoDrink, IcoSparkle, IcoDishes, IcoCandy, IcoPalette } from '../icons'
+
+const ICON_MAP = { drink: IcoDrink, sparkle: IcoSparkle, dishes: IcoDishes, candy: IcoCandy, palette: IcoPalette }
 
 export default function ServiceSelector({ seleccionados, onToggle }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       {SERVICIOS_ADICIONALES.map(srv => {
         const isSelected = seleccionados.includes(srv.id)
+        const SvgIcon = ICON_MAP[srv.icono]
         return (
           <label
             key={srv.id}
@@ -14,10 +18,10 @@ export default function ServiceSelector({ seleccionados, onToggle }) {
                 : 'border-gray-100 bg-white hover:border-brand-teal/40 shadow-sm'
             }`}
           >
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl transition-all duration-300 ${
-              isSelected ? 'bg-brand-teal/20 scale-110' : 'bg-gray-50'
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+              isSelected ? 'bg-brand-teal/20 text-brand-teal scale-110' : 'bg-gray-50 text-brand-muted'
             }`}>
-              {srv.icono}
+              {SvgIcon && <SvgIcon className="w-5 h-5" />}
             </div>
             <div className="flex-1 min-w-0">
               <p className={`font-bold text-sm leading-tight ${isSelected ? 'text-brand-dark' : 'text-brand-dark'}`}>{srv.nombre}</p>

@@ -82,7 +82,7 @@ export default function PlansSection({ planes, onSelectPlan }) {
                       onClick={(e) => { e.stopPropagation(); onSelectPlan(p) }}
                     >
                       <span className="absolute inset-0 bg-gradient-to-r from-brand-night to-brand-slate group-hover/btn:from-brand-teal group-hover/btn:to-brand-teal-dark transition-all duration-500" />
-                      <span className="relative z-10 text-white">Cotizar Este Plan →</span>
+                      <span className="relative z-10 text-white inline-flex items-center gap-1.5">Cotizar Este Plan <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
                     </button>
                   </div>
                 </div>

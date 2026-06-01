@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { format, parseISO, isSameDay, startOfDay } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useToast } from './components/Toast'
+import { IcoChart, IcoClipboard, IcoCalendar, IcoPalm, IcoDownload, IcoTrash } from './icons'
 import {
   getReservas, getGastos, getFechasBloqueadas,
   updateReservaEstado, deleteReserva,
@@ -13,9 +14,9 @@ import {
 } from './api'
 
 const NAV_ITEMS = [
-  { id: 'finanzas', label: 'Resumen', icon: '📊' },
-  { id: 'reservas', label: 'Reservas', icon: '📋' },
-  { id: 'calendario', label: 'Disponibilidad', icon: '📅' },
+  { id: 'finanzas', label: 'Resumen', icon: IcoChart },
+  { id: 'reservas', label: 'Reservas', icon: IcoClipboard },
+  { id: 'calendario', label: 'Disponibilidad', icon: IcoCalendar },
 ]
 
 function Admin() {
@@ -100,7 +101,7 @@ function Admin() {
           body: JSON.stringify({ operation: 'sendApprovalEmail', data: { nombre_cliente: reserva.nombre_cliente, email_cliente: reserva.email_cliente, fecha_evento: reserva.fecha_evento, total_cotizado: reserva.total_cotizado } }),
         })
       } catch (_) {}
-      if (reserva.telefono_cliente) { window.open(`https://wa.me/${reserva.telefono_cliente.replace(/\D/g, '')}?text=${encodeURIComponent('🎉 *RESERVA APROBADA* 🎉\n\nHola ' + reserva.nombre_cliente + ', tu reserva en Piscina Oasis ha sido confirmada.\n\n📅 ' + reserva.fecha_evento + '\n💰 $' + reserva.total_cotizado?.toLocaleString('es-CL') + '\n\n¡Nos vemos pronto! 🏡')}`, '_blank') }
+      if (reserva.telefono_cliente) { window.open(`https://wa.me/${reserva.telefono_cliente.replace(/\D/g, '')}?text=${encodeURIComponent('*RESERVA APROBADA*\n\nHola ' + reserva.nombre_cliente + ', tu reserva en Piscina Oasis ha sido confirmada.\n\nFecha: ' + reserva.fecha_evento + '\nTotal: $' + reserva.total_cotizado?.toLocaleString('es-CL') + '\n\nNos vemos pronto!')}`, '_blank') }
       addToast('Reserva confirmada. Correo + WhatsApp enviados.', 'success')
       setReservas((await getReservas()) || [])
     } catch (err) { addToast('Error: ' + err.message, 'error') }
@@ -159,7 +160,7 @@ function Admin() {
         <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-brand-teal/5 rounded-full blur-[100px]" />
         <form onSubmit={handleLogin} className="relative z-10 glass-light p-10 md:p-12 rounded-[2.5rem] shadow-2xl w-full max-w-md animate-scaleIn">
           <div className="text-center mb-8">
-            <div className="mb-4 text-5xl animate-float-slow inline-block">🌴</div>
+            <div className="mb-4 animate-float-slow inline-flex"><IcoPalm className="w-12 h-12 text-brand-teal" /></div>
             <h2 className="text-3xl font-serif font-black mb-1 text-brand-night">Piscina Oasis</h2>
             <p className="text-xs font-bold text-brand-muted uppercase tracking-widest">Portal Administrativo</p>
           </div>
@@ -188,13 +189,16 @@ function Admin() {
           <div className="truncate"><p className="text-sm font-bold text-white truncate">{sesion.user?.email}</p><button onClick={handleLogout} className="text-xs text-white/30 hover:text-brand-rose transition cursor-pointer">Cerrar Sesión</button></div>
         </div>
         <nav className="flex-1 px-4 py-6 space-y-1.5">
-          {NAV_ITEMS.map(tab => (
-            <button key={tab.id} onClick={() => setVistaActiva(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${vistaActiva === tab.id ? 'bg-brand-gold/20 text-brand-gold' : 'text-white/50 hover:bg-white/5 hover:text-white'}`}>
-              <span>{tab.icon}</span> {tab.label}
-            </button>
-          ))}
+          {NAV_ITEMS.map(tab => {
+            const Icon = tab.icon
+            return (
+              <button key={tab.id} onClick={() => setVistaActiva(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${vistaActiva === tab.id ? 'bg-brand-gold/20 text-brand-gold' : 'text-white/50 hover:bg-white/5 hover:text-white'}`}>
+                <Icon className="w-5 h-5" /> {tab.label}
+              </button>
+            )
+          })}
         </nav>
-        <div className="px-4 py-4 border-t border-white/5"><button onClick={exportarCSV} className="w-full glass text-white/50 px-4 py-2.5 rounded-xl text-xs font-semibold hover:bg-white/10 transition flex items-center justify-center gap-2 cursor-pointer">📥 Exportar CSV</button></div>
+        <div className="px-4 py-4 border-t border-white/5"><button onClick={exportarCSV} className="w-full glass text-white/50 px-4 py-2.5 rounded-xl text-xs font-semibold hover:bg-white/10 transition flex items-center justify-center gap-2 cursor-pointer"><IcoDownload className="w-4 h-4" /> Exportar CSV</button></div>
       </aside>
 
       <main className="flex-1 p-4 md:p-10 pb-28 md:pb-10 h-screen overflow-y-auto">
@@ -232,7 +236,7 @@ function Admin() {
                           </div>
                         </div>
                         <span className="text-xs font-bold text-brand-muted w-20 text-right shrink-0">${g.monto?.toLocaleString('es-CL')}</span>
-                        <button onClick={() => eliminarGasto(g.id)} className="text-red-300 hover:text-red-500 text-xs shrink-0 cursor-pointer">✕</button>
+                        <button onClick={() => eliminarGasto(g.id)} className="text-red-300 hover:text-red-500 shrink-0 cursor-pointer p-1"><IcoTrash className="w-4 h-4" /></button>
                       </div>
                     )
                   })}
@@ -313,11 +317,14 @@ function Admin() {
 
       <nav className="md:hidden fixed bottom-0 left-0 right-0 glass-dark z-50 safe-area-bottom border-t border-white/5">
         <div className="flex justify-around py-2">
-          {NAV_ITEMS.map(tab => (
-            <button key={tab.id} onClick={() => setVistaActiva(tab.id)} className={`flex flex-col items-center px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${vistaActiva === tab.id ? 'text-brand-gold' : 'text-white/40 hover:text-white'}`}>
-              <span className="text-lg mb-0.5">{tab.icon}</span>{tab.label}
-            </button>
-          ))}
+          {NAV_ITEMS.map(tab => {
+            const Icon = tab.icon
+            return (
+              <button key={tab.id} onClick={() => setVistaActiva(tab.id)} className={`flex flex-col items-center px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${vistaActiva === tab.id ? 'text-brand-gold' : 'text-white/40 hover:text-white'}`}>
+                <Icon className="w-5 h-5 mb-1" />{tab.label}
+              </button>
+            )
+          })}
         </div>
       </nav>
     </div>

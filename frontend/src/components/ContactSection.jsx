@@ -13,7 +13,7 @@ export default function ContactSection() {
       addToast('Por favor ingresa tu nombre y mensaje.', 'warning')
       return
     }
-    const texto = `Hola ${SITE_NAME}! 🌴\nMi nombre es ${datos.nombre}${datos.email ? ` (${datos.email})` : ''}.\n\nTengo la siguiente consulta:\n${datos.mensaje}`
+    const texto = `Hola ${SITE_NAME}!\nMi nombre es ${datos.nombre}${datos.email ? ` (${datos.email})` : ''}.\n\nTengo la siguiente consulta:\n${datos.mensaje}`
     window.open(`https://wa.me/${WHATSAPP.ADMIN_NUMBER}?text=${encodeURIComponent(texto)}`, '_blank')
     addToast('WhatsApp abierto en una nueva ventana.', 'success')
     setDatos({ nombre: '', email: '', mensaje: '' })
