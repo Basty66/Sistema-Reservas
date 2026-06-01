@@ -142,17 +142,25 @@ html { scroll-behavior: smooth; }
 @keyframes splash-svg-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes splash-svg-pop { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.25); opacity: 1; } 100% { transform: scale(1); } }
 @keyframes explosion-ring {
-  0% { transform: scale(0.3); opacity: 0.7; }
-  100% { transform: scale(2.8); opacity: 0; }
+  0% { transform: scale(0.3); opacity: 0.95; }
+  100% { transform: scale(12); opacity: 0; }
 }
 @keyframes explosion-particle {
-  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  10% { transform: translate(0, 0) scale(1.4); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.1); opacity: 0; }
+}
+@keyframes explosion-particle2 {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 0; }
+  15% { transform: translate(0, 0) scale(1.2); opacity: 1; }
   100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
 }
 @keyframes explosion-flash {
   0% { opacity: 0; }
-  15% { opacity: 1; }
-  100% { opacity: 0; }
+  8% { opacity: 0.95; }
+  16% { opacity: 0.15; }
+  24% { opacity: 0.7; }
+  38% { opacity: 0; }
 }
 
 .animate-fadeIn { animation: fadeIn 0.5s ease-out both; }

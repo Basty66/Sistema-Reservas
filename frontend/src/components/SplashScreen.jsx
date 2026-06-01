@@ -20,14 +20,26 @@ const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
 
 const C = 2 * Math.PI * 44
 
-const BURST = Array.from({ length: 24 }, (_, i) => {
-  const angle = (i / 24) * 360 + (i % 3) * 5
-  const dist = 55 + (i % 6) * 18
+const BURST_1 = Array.from({ length: 28 }, (_, i) => {
+  const angle = (i / 28) * 360 + (i % 7) * 2.5
+  const tier = Math.floor(i / 7)
+  const dist = 100 + tier * 65
   return {
     id: i, angle, dist,
-    size: 1.8 + (i % 4) * 1.2,
+    size: 2 + (i % 7) * 1,
     color: i % 4 === 0 ? '#d4a853' : i % 4 === 1 ? '#f0d78c' : i % 4 === 2 ? '#14b8a6' : '#ffffff',
-    delay: (i % 6) * 0.04,
+    delay: (i % 7) * 0.025,
+  }
+})
+
+const BURST_2 = Array.from({ length: 20 }, (_, i) => {
+  const angle = (i / 20) * 360 + 14 + (i % 5) * 4
+  const dist = 60 + (i % 5) * 30
+  return {
+    id: i + 100, angle, dist,
+    size: 1.5 + (i % 4) * 1.5,
+    color: i % 3 === 0 ? '#ffffff' : i % 3 === 1 ? '#d4a853' : '#14b8a6',
+    delay: 0.12 + (i % 5) * 0.03,
   }
 })
 
@@ -89,6 +101,50 @@ export default function SplashScreen({ onFinish }) {
           }} />
         ))}
       </div>
+
+      {exploding && (
+        <>
+          <div className="absolute inset-0 z-30 bg-white pointer-events-none animate-[explosion-flash_0.5s_ease-out_forwards]" />
+          <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="w-6 h-6 rounded-full border-[5px] border-brand-gold/80 animate-[explosion-ring_0.9s_cubic-bezier(.17,.67,.12,.99)_forwards]" />
+              <div className="w-6 h-6 rounded-full border-[3px] border-brand-teal/60 animate-[explosion-ring_0.9s_cubic-bezier(.17,.67,.12,.99)_0.1s_forwards]" />
+              <div className="w-6 h-6 rounded-full border-2 border-white/50 animate-[explosion-ring_0.9s_cubic-bezier(.17,.67,.12,.99)_0.2s_forwards]" />
+              <div className="w-6 h-6 rounded-full border border-brand-gold/40 animate-[explosion-ring_0.9s_cubic-bezier(.17,.67,.12,.99)_0.3s_forwards]" />
+            </div>
+            {BURST_1.map(p => (
+              <div key={p.id}
+                className="absolute rounded-full"
+                style={{
+                  width: p.size, height: p.size,
+                  top: '50%', left: '50%',
+                  marginTop: -p.size / 2, marginLeft: -p.size / 2,
+                  background: p.color,
+                  boxShadow: `0 0 ${p.size * 2.5}px ${p.color}`,
+                  '--dx': `${Math.cos(p.angle * Math.PI / 180) * p.dist}px`,
+                  '--dy': `${Math.sin(p.angle * Math.PI / 180) * p.dist}px`,
+                  animation: `explosion-particle 0.7s cubic-bezier(.08,.6,.2,.99) ${p.delay}s forwards`,
+                }}
+              />
+            ))}
+            {BURST_2.map(p => (
+              <div key={p.id}
+                className="absolute rounded-full"
+                style={{
+                  width: p.size, height: p.size,
+                  top: '50%', left: '50%',
+                  marginTop: -p.size / 2, marginLeft: -p.size / 2,
+                  background: p.color,
+                  boxShadow: `0 0 ${p.size * 3}px ${p.color}`,
+                  '--dx': `${Math.cos(p.angle * Math.PI / 180) * p.dist}px`,
+                  '--dy': `${Math.sin(p.angle * Math.PI / 180) * p.dist}px`,
+                  animation: `explosion-particle2 0.6s cubic-bezier(.08,.6,.2,.99) ${p.delay}s forwards`,
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       <div className={`relative z-10 flex flex-col items-center gap-6 transition-all duration-800 ease-out ${
         visible && !exiting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
@@ -181,31 +237,6 @@ export default function SplashScreen({ onFinish }) {
               <circle cx="70" cy="8" r="1" fill="url(#st)" opacity="0.25"
                 className="animate-[splash-svg-pop_0.3s_ease-out_0.56s_both]" />
             </svg>
-
-            {/* ── Explosion overlay ── */}
-            {exploding && (
-              <div className="absolute inset-0 pointer-events-none z-10">
-                <div className="absolute inset-0 rounded-[2rem] bg-white/[0.08] animate-[explosion-flash_0.4s_ease-out_forwards]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="absolute w-32 h-32 rounded-full border-2 border-brand-gold/50 animate-[explosion-ring_0.7s_ease-out_forwards]" />
-                  <div className="absolute w-32 h-32 rounded-full border border-brand-teal/30 animate-[explosion-ring_0.7s_ease-out_0.1s_forwards]" />
-                </div>
-                {BURST.map(p => (
-                  <div key={p.id}
-                    className="absolute rounded-full"
-                    style={{
-                      width: p.size, height: p.size,
-                      top: '50%', left: '50%',
-                      marginTop: -p.size / 2, marginLeft: -p.size / 2,
-                      background: p.color, boxShadow: `0 0 4px ${p.color}`,
-                      '--dx': `${Math.cos(p.angle * Math.PI / 180) * p.dist}px`,
-                      '--dy': `${Math.sin(p.angle * Math.PI / 180) * p.dist}px`,
-                      animation: `explosion-particle 0.65s cubic-bezier(.17,.67,.12,.99) ${p.delay}s forwards`,
-                    }}
-                  />
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
